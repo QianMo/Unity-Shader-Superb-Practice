@@ -41,7 +41,7 @@ Shader "ShaderSuperb/Session1/6-Vertex Diffuse"
 			};
 
 			//=============================================
-			//vertex函数需完成顶点坐标从模型空间到裁剪空间的变换
+			//vertex函数需至少完成顶点坐标从模型空间到裁剪空间的变换
 			v2f vert(a2v v)
 			{
 				v2f o;
