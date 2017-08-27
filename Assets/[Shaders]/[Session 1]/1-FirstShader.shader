@@ -3,9 +3,9 @@
 	Properties
 	{
 		_Color("Color",Color)=(1,1,1,1) //float4
-		_Vector("Vector",Vector)=(1,2,3,4)//float4
 		_Int("Int",Int)=666
 		_Float("Float",Float)=666.0
+		_Vector("Vector",Vector)=(1,2,3,4)//float4
 		_Range("Range",Range(1,66))=6
 		_2D("Texture",2D)="blue"{}
 		_Cube("Cube",Cube)="white"{}
