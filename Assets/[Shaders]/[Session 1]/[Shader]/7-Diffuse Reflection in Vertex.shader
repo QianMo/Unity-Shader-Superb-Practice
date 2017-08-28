@@ -1,6 +1,6 @@
 ﻿
 
-Shader "ShaderSuperb/Session1/6-Vertex Diffuse"
+Shader "ShaderSuperb/Session1/7-Diffuse Reflection in Vertex"
 {
 	Properties
 	{
@@ -12,6 +12,9 @@ Shader "ShaderSuperb/Session1/6-Vertex Diffuse"
 	{
 		Pass
 		{
+			//设置为前向渲染路径。保证Unity提供的内置变量值的正确性
+			Tags { "LightMode" = "ForwardBase" }
+			
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -52,16 +55,17 @@ Shader "ShaderSuperb/Session1/6-Vertex Diffuse"
 				fixed3 normalDirection = normalize( mul( float4(v.normal,0.0),unity_WorldToObject).xyz );
 
 				//平行光源的光线方向
-				fixed3 lightDirection =  -normalize( _WorldSpaceLightPos0.xyz);
+				fixed3 lightDirection =  normalize( _WorldSpaceLightPos0.xyz);
 
-				//漫反射的颜色=i_diffuse * i_incoming * k_diffuse *max(0,N*L)
-				fixed3 diffuse = _Diffuse.rgb * _LightColor0.rgb * max(0,dot(normalDirection, lightDirection));
+				//lambert漫反射的颜色=i_diffuse * i_incoming * k_diffuse *max(0,N*L)
+				float atten = 1.0;
+				fixed3 diffuseReflection = atten *  _Diffuse.rgb * _LightColor0.rgb * max(0,dot(normalDirection, lightDirection));
 
 				//环境光颜色
 				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.rgb;
 
 				//最终颜色
-				o.color = float4(diffuse + ambient,1.0);
+				o.color = float4(diffuseReflection + ambient,1.0);
 
 				return o;
 			}
