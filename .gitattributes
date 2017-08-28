@@ -19,3 +19,4 @@
 # Linguist Language
 $ cat .gitattributes
 *.rb linguist-language=GLSL
+*.rb linguist-vendored=GLSL
