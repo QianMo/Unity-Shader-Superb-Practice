@@ -87,7 +87,8 @@ Shader "ShaderSuperb/Session1/11-Specular Reflection in Vertex"
 				//4、计算环境光
 				float3 ambient = UNITY_LIGHTMODEL_AMBIENT.rgb;
 
-				//最终颜色
+				//-----------------------
+				//5、最终颜色
 				o.color = float4(DiffuseReflection + SpecularReflection+ ambient,1.0);
 
 				return o;
