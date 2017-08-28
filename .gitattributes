@@ -17,4 +17,5 @@
 *.RTF	 diff=astextplain
 
 # Linguist Language
+$ cat .gitattributes
 *.rb linguist-language=GLSL
