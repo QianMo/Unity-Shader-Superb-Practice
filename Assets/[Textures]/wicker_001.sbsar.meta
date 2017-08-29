@@ -1,0 +1,81 @@
+fileFormatVersion: 2
+guid: fb600cdae6546d94984d839221b4b7d0
+timeCreated: 1504020612
+licenseType: Pro
+SubstanceImporter:
+  serializedVersion: 5
+  materialInstances:
+  - serializedVersion: 16
+    name: wicker_001
+    prototypeName: wicker_001
+    shaderName: 
+    shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderKeywords: 
+    renderQueue: -1
+    lightmapFlags: 4
+    inputs: []
+    materialInformation:
+      serializedVersion: 5
+      offset: {x: 0, y: 0}
+      scale: {x: 1, y: 1}
+      generateMipmaps: 1
+      generateAllOutputs: 0
+      animationUpdateRate: 0
+    materialProperties:
+      serializedVersion: 3
+      texEnvs: []
+      floats: []
+      colors: []
+    textureParameters:
+    - name: wicker_001_basecolor
+      alphaSource: 6
+      filterMode: 1
+      aniso: 1
+      wrapMode: 0
+    - name: wicker_001_normal
+      alphaSource: 0
+      filterMode: 1
+      aniso: 1
+      wrapMode: 0
+    - name: wicker_001_metallic
+      alphaSource: 7
+      filterMode: 1
+      aniso: 1
+      wrapMode: 0
+    - name: wicker_001_ambient_occlusion
+      alphaSource: 0
+      filterMode: 1
+      aniso: 1
+      wrapMode: 0
+    - name: wicker_001_height
+      alphaSource: 0
+      filterMode: 1
+      aniso: 1
+      wrapMode: 0
+    textureAssignments:
+    - shaderProp: _BumpMap
+      material: {instanceID: 0}
+      baseUID: 2473541560
+    - shaderProp: _MainTex
+      material: {instanceID: 0}
+      baseUID: 2473541562
+    - shaderProp: _MetallicGlossMap
+      material: {instanceID: 0}
+      baseUID: 2473541552
+    - shaderProp: _OcclusionMap
+      material: {instanceID: 0}
+      baseUID: 2473541558
+    - shaderProp: _ParallaxMap
+      material: {instanceID: 0}
+      baseUID: 2473541556
+    buildTargetSettings:
+    - serializedVersion: 2
+      buildTarget: 
+      textureWidth: 512
+      textureHeight: 512
+      textureFormat: 0
+      loadingBehavior: 1
+  deletedPrototypes: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

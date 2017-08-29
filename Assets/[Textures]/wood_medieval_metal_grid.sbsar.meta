@@ -1,0 +1,81 @@
+fileFormatVersion: 2
+guid: 9b04e2a7153c5e04a9d291b5f4c661a6
+timeCreated: 1504020767
+licenseType: Pro
+SubstanceImporter:
+  serializedVersion: 5
+  materialInstances:
+  - serializedVersion: 16
+    name: wood_medieval_metal_grid
+    prototypeName: wood_medieval_metal_grid
+    shaderName: 
+    shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    shaderKeywords: 
+    renderQueue: -1
+    lightmapFlags: 4
+    inputs: []
+    materialInformation:
+      serializedVersion: 5
+      offset: {x: 0, y: 0}
+      scale: {x: 1, y: 1}
+      generateMipmaps: 1
+      generateAllOutputs: 0
+      animationUpdateRate: 0
+    materialProperties:
+      serializedVersion: 3
+      texEnvs: []
+      floats: []
+      colors: []
+    textureParameters:
+    - name: wood_medieval_metal_grid_basecolor
+      alphaSource: 6
+      filterMode: 1
+      aniso: 1
+      wrapMode: 0
+    - name: wood_medieval_metal_grid_normal
+      alphaSource: 0
+      filterMode: 1
+      aniso: 1
+      wrapMode: 0
+    - name: wood_medieval_metal_grid_metallic
+      alphaSource: 7
+      filterMode: 1
+      aniso: 1
+      wrapMode: 0
+    - name: wood_medieval_metal_grid_ambient_occlusion
+      alphaSource: 0
+      filterMode: 1
+      aniso: 1
+      wrapMode: 0
+    - name: wood_medieval_metal_grid_height
+      alphaSource: 0
+      filterMode: 1
+      aniso: 1
+      wrapMode: 0
+    textureAssignments:
+    - shaderProp: _BumpMap
+      material: {instanceID: 0}
+      baseUID: 113632695
+    - shaderProp: _MainTex
+      material: {instanceID: 0}
+      baseUID: 113632685
+    - shaderProp: _MetallicGlossMap
+      material: {instanceID: 0}
+      baseUID: 113632689
+    - shaderProp: _OcclusionMap
+      material: {instanceID: 0}
+      baseUID: 113632261
+    - shaderProp: _ParallaxMap
+      material: {instanceID: 0}
+      baseUID: 113632314
+    buildTargetSettings:
+    - serializedVersion: 2
+      buildTarget: 
+      textureWidth: 512
+      textureHeight: 512
+      textureFormat: 0
+      loadingBehavior: 1
+  deletedPrototypes: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
