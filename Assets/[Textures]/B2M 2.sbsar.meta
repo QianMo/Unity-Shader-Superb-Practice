@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e63c314a82ecf194487ab6e6ba304b3f
-timeCreated: 1504168971
+timeCreated: 1504169729
 licenseType: Pro
 SubstanceImporter:
   serializedVersion: 5
@@ -156,7 +156,7 @@ SubstanceImporter:
         texture: {instanceID: 0}
     - name: Normal_Strength
       value:
-        scalar[0]: 13.06
+        scalar[0]: 20
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
