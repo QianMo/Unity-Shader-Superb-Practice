@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session1/1.1 firstShader"
+﻿Shader "ShaderSuperb/Session1/1-FirstShader"
 {
 	Properties
 	{
@@ -19,14 +19,6 @@
 		Pass
 		{
 			CGPROGRAM
-			float4 _Color;
-			float4 _Vector;
-
-
-			float dsss()
-			{
-				float aa=_Vector.w;
-			}
 
 			ENDCG
 		}
