@@ -1,6 +1,8 @@
 ﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 
-
+//凹凸贴图是指计算机图形学中在三维环境中通过纹理方法来产生表面凹凸不平的视觉效果。
+//它主要的原理是通过改变表面光照方程的法线，而不是表面的几何法线。
+//通过光强的计算，产生凹凸不平的表面效果。
 
 Shader "ShaderSuperb/Session1/18-Bump Texture"
 {
@@ -30,9 +32,13 @@ Shader "ShaderSuperb/Session1/18-Bump Texture"
             //顶点输入结构体
             struct a2v
             {
-                float4 vertex:POSITION;//从Unity获取顶点位置
-                float4 uv:TEXCOORD0;//获取模型的第一组纹理坐标
-                float3 normal : NORMAL;//获取模型的法线向量
+                //获取模型的顶点位置
+                float4 vertex : POSITION;
+                //获取模型的第一组纹理坐标
+                float4 uv : TEXCOORD0;
+                //获取模型的法线向量
+                float3 normal : NORMAL;
+                //获取模型的切线向量
                 float4 tangent : TANGENT;
             };
 
@@ -41,7 +47,7 @@ Shader "ShaderSuperb/Session1/18-Bump Texture"
             struct v2f
             {
                 //裁剪空间中顶点坐标
-                float4 position:SV_POSITION;
+                float4 position : SV_POSITION;
                 //纹理坐标
                 float4 uv :TEXCOORD0;
                 //模型空间中旋转后光线方向
@@ -54,18 +60,24 @@ Shader "ShaderSuperb/Session1/18-Bump Texture"
             v2f vert(a2v v)
             {
                 v2f o;
+
                 //float4 UnityObjectToClipPos(float4 pos)等价于：mul(UNITY_MATRIX_MVP, float4(pos)),
-                o.position=UnityObjectToClipPos(v.vertex);
+                o.position = UnityObjectToClipPos(v.vertex);
+
  				//传递纹理坐标
                 o.uv=v.uv;
 
+                //副法线
                 float3 binormal = cross(normalize(v.normal), normalize(v.tangent.xyz)) * v.tangent.w;
 
+                //计算rotation变换矩阵
     			float3x3 rotation = float3x3(v.tangent.xyz, binormal, v.normal);
 
-  				float3 objectSpaceLightDir= mul(unity_WorldToObject, _WorldSpaceLightPos0).xyz;
+                //计算模型空间下的光照方向
+  				float3 objectSpaceLightDir = mul(unity_WorldToObject, _WorldSpaceLightPos0).xyz;
 
-    			o.objectSpaceRotateLightDir=mul(rotation,objectSpaceLightDir);
+                //计算模型空间下旋转后的光照方向
+    			o.objectSpaceRotateLightDir = mul(rotation, normalize(objectSpaceLightDir));
 
                 return o;
             }
@@ -74,21 +86,19 @@ Shader "ShaderSuperb/Session1/18-Bump Texture"
             //fragment函数需返回对应屏幕上该像素的颜色值
             float4 frag(v2f i):SV_Target
             {
-
-                //世界空间中法线方向
-                //float3 WorldSpaceNormalDir = normalize(i.worldSpaceNormalDir);
-                //平行光源的光线方向
-                float3 WorldSpaceLightDir =  normalize( _WorldSpaceLightPos0.xyz);
-
+                //获取主纹理
                 float4 MainTexColor = tex2D(_MainTex, i.uv);
 
-                float3 NormalTex = UnpackNormal(tex2D(_BumpMap,i.uv));
+                //获取模型坐标下的凹凸法线方向
+                float3 ObjectSpaceBumpNormalDir = UnpackNormal(tex2D(_BumpMap,i.uv));
 
-                float3 NormalDiffuse = max(0,dot(NormalTex,i.objectSpaceRotateLightDir));
+                //法线凹凸强度 = 模型空间下凹凸法线方向 x 模型空间下光照方向
+                float3 BumpIntensity = max(0, dot(ObjectSpaceBumpNormalDir,i.objectSpaceRotateLightDir));
 
-                float3 FinalColor = MainTexColor * NormalDiffuse;
+                //最终像素颜色
+                float3 FinalColor = MainTexColor * BumpIntensity;
 
-                return float4(FinalColor,1);
+                return float4(FinalColor, 1);
             }
 
             ENDCG

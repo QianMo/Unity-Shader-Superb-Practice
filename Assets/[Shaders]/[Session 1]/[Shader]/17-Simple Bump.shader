@@ -1,5 +1,8 @@
 ﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 
+//凹凸贴图是指计算机图形学中在三维环境中通过纹理方法来产生表面凹凸不平的视觉效果。
+//它主要的原理是通过改变表面光照方程的法线，而不是表面的几何法线。
+//通过光强的计算，产生凹凸不平的表面效果。
 
 Shader "ShaderSuperb/Session1/17-Simple Bump"
 {
@@ -51,18 +54,24 @@ Shader "ShaderSuperb/Session1/17-Simple Bump"
             v2f vert(a2v v)
             {
                 v2f o;
+                
                 //float4 UnityObjectToClipPos(float4 pos)等价于：mul(UNITY_MATRIX_MVP, float4(pos)),
                 o.position=UnityObjectToClipPos(v.vertex);
+
  				//传递纹理坐标
                 o.uv=v.uv;
 
+                //副法线
                 float3 binormal = cross(normalize(v.normal), normalize(v.tangent.xyz)) * v.tangent.w;
 
+                //计算rotation变换矩阵
     			float3x3 rotation = float3x3(v.tangent.xyz, binormal, v.normal);
 
-  				float3 objectSpaceLightDir= mul(unity_WorldToObject, _WorldSpaceLightPos0).xyz;
+                //计算模型空间下的光照方向
+  				float3 objectSpaceLightDir = mul(unity_WorldToObject, _WorldSpaceLightPos0).xyz;
 
-    			o.objectSpaceRotateLightDir=mul(rotation,objectSpaceLightDir);
+                //得到模型空间下旋转后的光照方向
+    			o.objectSpaceRotateLightDir = mul(rotation, normalize(objectSpaceLightDir));
 
                 return o;
             }
@@ -72,16 +81,14 @@ Shader "ShaderSuperb/Session1/17-Simple Bump"
             float4 frag(v2f i):SV_Target
             {
 
-                //世界空间中法线方向
-                //float3 WorldSpaceNormalDir = normalize(i.worldSpaceNormalDir);
-                //平行光源的光线方向
-                float3 WorldSpaceLightDir =  normalize( _WorldSpaceLightPos0.xyz);
+                //获取模型坐标下的凹凸法线方向
+                float3 ObjectSpaceNormalDir = UnpackNormal(tex2D(_BumpMap,i.uv));
 
-                float3 NormalTex = UnpackNormal(tex2D(_BumpMap,i.uv));
+                //法线凹凸强度 = 模型空间下凹凸法线方向 x 模型空间下光照方向
+                float3 BumpIntensity = max(0, dot(ObjectSpaceNormalDir,i.objectSpaceRotateLightDir));
 
-                float3 NormalDiffuse = max(0,dot(NormalTex,i.objectSpaceRotateLightDir));
-
-                float3 FinalColor = NormalDiffuse;
+                //最终像素颜色
+                float3 FinalColor = BumpIntensity * 0.6f;
 
                 return float4(FinalColor,1);
             }

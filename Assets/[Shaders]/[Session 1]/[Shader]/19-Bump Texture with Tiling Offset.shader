@@ -29,7 +29,7 @@ Shader "ShaderSuperb/Session1/19-Bump Texture with Tiling Offset"
             //顶点输入结构体
             struct a2v
             {
-                //从Unity获取顶点位置
+                //获取模型的顶点位置
                 float4 vertex:POSITION;
                 //获取模型的第一组纹理坐标
                 float4 uv:TEXCOORD0;
@@ -59,23 +59,26 @@ Shader "ShaderSuperb/Session1/19-Bump Texture with Tiling Offset"
             v2f vert(a2v v)
             {
                 v2f o;
+                
                 //float4 UnityObjectToClipPos(float4 pos)等价于：mul(UNITY_MATRIX_MVP, float4(pos)),
                 o.position = UnityObjectToClipPos(v.vertex);
+
  				//传递主纹理坐标
                 o.mainTexUv = TRANSFORM_TEX(v.uv,_MainTex);
-                //传递bump纹理坐标
-                o.bumpTexUv=TRANSFORM_TEX(v.uv,_BumpMap);
 
-                //计算副法线
+                //传递bump纹理坐标
+                o.bumpTexUv = TRANSFORM_TEX(v.uv,_BumpMap);
+
+                //副法线
                 float3 binormal = cross(normalize(v.normal), normalize(v.tangent.xyz)) * v.tangent.w;
 
-                //计算旋转matrix
+                //计算rotation变换矩阵
     			float3x3 rotation = float3x3(v.tangent.xyz, binormal, v.normal);
 
-                //计算模型空间下的光照方向向量
+                //计算模型空间下的光照方向
   				float3 objectSpaceLightDir= mul(unity_WorldToObject, _WorldSpaceLightPos0).xyz;
 
-                //计算模型空间下旋转后的光线方向
+                //计算模型空间下旋转后的光照方向
     			o.objectSpaceRotateLightDir=mul(rotation,normalize(objectSpaceLightDir));
 
                 return o;
@@ -86,18 +89,17 @@ Shader "ShaderSuperb/Session1/19-Bump Texture with Tiling Offset"
             float4 frag(v2f i):SV_Target
             {
 
-                //世界空间中法线方向
-                //float3 WorldSpaceNormalDir = normalize(i.worldSpaceNormalDir);
-                //平行光源的光线方向
-                float3 WorldSpaceLightDir =  normalize( _WorldSpaceLightPos0.xyz);
-                //采样主纹理-获取此坐标下的主纹理值
+                //获取主纹理
                 float4 MainTexColor = tex2D(_MainTex, i.mainTexUv);
-                //获取此坐标下的法线值
-                float3 NormalTex = UnpackNormal(tex2D(_BumpMap,i.bumpTexUv));
-                //获取法线的Diffuse bump值
-                float3 NormalDiffuse = max(0,dot(NormalTex,i.objectSpaceRotateLightDir));
 
-                float3 FinalColor = MainTexColor * NormalDiffuse;
+                //获取模型坐标下的凹凸法线方向
+                float3 ObjectSpaceNormalDir = UnpackNormal(tex2D(_BumpMap,i.bumpTexUv));
+
+                //法线凹凸强度 = 模型空间下凹凸法线方向 x 模型空间下光照方向
+                float3 BumpIntensity = max(0, dot(ObjectSpaceNormalDir,i.objectSpaceRotateLightDir));
+
+                //最终像素颜色
+                float3 FinalColor = MainTexColor * BumpIntensity;
 
                 return float4(FinalColor,1);
             }
