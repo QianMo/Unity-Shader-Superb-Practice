@@ -6,11 +6,11 @@ Shader "ShaderSuperb/Session1/23-Simple Vertex Rim"
 	{
 		_Diffuse("Diffuse Color",Color) = (1,0.3,0.5,1)
 		//边缘发光颜色 
-        _RimColor("Rim Color", Color) = (0.5,0.5,0.5,1)  
-        //边缘发光强度
-        _RimPower("Rim Power", Range(0.0, 36)) = 6
-        //边缘发光强度系数 
-        _RimIntensity("Rim Intensity", Range(0.0, 100)) = 3  
+		_RimColor("Rim Color", Color) = (0.5,0.5,0.5,1)  
+		//边缘发光强度
+		_RimPower("Rim Power", Range(0.0, 36)) = 6
+		//边缘发光强度系数 
+		_RimIntensity("Rim Intensity", Range(0.0, 100)) = 3  
 	}
 
 	//=========================================================================
@@ -28,12 +28,12 @@ Shader "ShaderSuperb/Session1/23-Simple Vertex Rim"
 			uniform float4 _Diffuse;
 			//要用内置的光照颜色，定义uniform float4 _LightColor0或#include "Lighting.cginc" ;
 			uniform float4 _LightColor0;
-            //边缘光颜色  
-            uniform float4 _RimColor;  
-            //边缘光强度  
-            uniform float _RimPower;  
-            //边缘光强度系数  
-            uniform float _RimIntensity;  
+			//边缘光颜色  
+			uniform float4 _RimColor;  
+			//边缘光强度  
+			uniform float _RimPower;  
+			//边缘光强度系数  
+			uniform float _RimIntensity;  
 
 			//---------------------------------
 			//顶点输入结构体
@@ -75,14 +75,14 @@ Shader "ShaderSuperb/Session1/23-Simple Vertex Rim"
 				//世界空间中顶点坐标
 				float3 worldSpaceVertexPos = normalize(mul(unity_ObjectToWorld, v.vertex));
 
-                //世界空间中观察方向=归一化（世界空间中摄像机坐标-世界空间中顶点坐标）
+				//世界空间中观察方向=归一化（世界空间中摄像机坐标-世界空间中顶点坐标）
 				float3 worldSpaceViewDir = normalize(_WorldSpaceCameraPos.xyz-worldSpaceVertexPos);
 
 				//准备自发光参数
-                //计算边缘强度  rim用的菲涅尔反射公式。
-                half Rim = 1.0 - max(0, dot(worldSpaceNormalDir, worldSpaceViewDir));  
-                //计算出边缘自发光强度  
-                float3 Emissive = _RimColor.rgb * pow(Rim , _RimPower) *_RimIntensity; 
+				//计算边缘强度  rim用的菲涅尔反射公式。
+				half Rim = 1.0 - max(0, dot(worldSpaceNormalDir, worldSpaceViewDir));  
+				//计算出边缘自发光强度  
+				float3 Emissive = _RimColor.rgb * pow(Rim , _RimPower) *_RimIntensity; 
 
 
 				//最终颜色=根据着色模型计算出的原颜色 + Emissive
@@ -95,7 +95,6 @@ Shader "ShaderSuperb/Session1/23-Simple Vertex Rim"
 			//fragment函数需返回对应屏幕上该像素的颜色值
 			float4 frag(v2f i):SV_Target
 			{
-
 
 				//直接使用顶点输出的颜色
 				return i.color;
