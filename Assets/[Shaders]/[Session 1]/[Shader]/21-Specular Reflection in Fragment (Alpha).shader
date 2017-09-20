@@ -1,6 +1,6 @@
 ﻿
 
-Shader "ShaderSuperb/Session1/11-Specular Reflection in Vertex"
+Shader "ShaderSuperb/Session1/21-Specular Reflection in Fragment (Alpha)"
 {
 	Properties
 	{
@@ -12,9 +12,13 @@ Shader "ShaderSuperb/Session1/11-Specular Reflection in Vertex"
 	//=========================================================================
 	SubShader
 	{
+		//透明shader. Step 1. 设置混合运算类型
+		Blend SrcAlpha OneMinusSrcAlpha
 		Pass
 		{
-			Tags{ "Queue"="Transparent" "LightMode" = "ForwardBase"  "IngnoreProjector"="True" "RenderType"="Transparent" }
+			//透明shader. Step 2. 设置合理的tags 
+			Tags{  "LightMode" = "ForwardBase"  "Queue"="Transparent" "IngnoreProjector"="True" "RenderType"="Transparent" }
+			
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -40,8 +44,11 @@ Shader "ShaderSuperb/Session1/11-Specular Reflection in Vertex"
 			{
 				//裁剪空间中顶点坐标
 				float4 position:SV_POSITION;
+
+				float3 worldSpaceVertexPos:COLOR1;
+				float3 worldSpaceNormalDir:COLOR2;
 				//COLOR0和COLOR1等，可作为顶点和片段的输入输出的语义，是精度低，0–1范围内的数据（如简单的颜色值）可选为1维，二维，三维，四维的float，fixed，half
-				float4 color:COLOR0;
+				//float4 color:COLOR3;
 
 			};
 
@@ -49,45 +56,16 @@ Shader "ShaderSuperb/Session1/11-Specular Reflection in Vertex"
 			//vertex函数需至少完成顶点坐标从模型空间到裁剪空间的变换
 			v2f vert(a2v v)
 			{
-				//----------------------------------
-				//1、顶点坐标变换
+				//顶点坐标变换
 				v2f o;
-				//模型空间的坐标转换为世界空间中坐标||float4 UnityObjectToClipPos(float4 pos)等价于：mul(UNITY_MATRIX_MVP, float4(pos)),
-				o.position=UnityObjectToClipPos(v.vertex);
-
-
-				//-----------------------------------
-				//2、计算Diffuse项
+				//------------------------------------
+				//准备数据，传递给fragment
+				//模型空间的坐标转换为裁剪空间中坐标||float4 UnityObjectToClipPos(float4 pos)等价于：mul(UNITY_MATRIX_MVP, float4(pos)),
+				o.position = UnityObjectToClipPos(v.vertex);
+				//世界空间中顶点坐标
+				o.worldSpaceVertexPos = mul(unity_ObjectToWorld, v.vertex);
 				//世界空间中法线方向
-				float3 WorldSpaceNormalDir = normalize( mul( float4(v.normal,0.0),unity_WorldToObject).xyz );
-
-				//平行光源的光线方向
-				float3 WorldSpaceLightDir =  normalize( _WorldSpaceLightPos0.xyz);
-
-				//lambert漫反射的颜色=i_diffuse * i_incoming * k_diffuse *max(0,N*L)
-				float AttenDiffuse = 1.0;
-				float3 DiffuseReflection = AttenDiffuse *  _DiffuseColor.rgb * _LightColor0.rgb * max(0,dot(WorldSpaceNormalDir, WorldSpaceLightDir));
-
-
-				//----------------------------------
-				//3、计算Specular项
-				float AttenSpecular = 1.0;
-				//世界空间中镜面反射方向
-				float3 WorldSpaceReflectionDir = normalize(reflect(-WorldSpaceLightDir,WorldSpaceNormalDir));
-				//世界空间中观察方向=世界空间中camera位置-世界空间中顶点位置
-				float3 WorldSpaceViewDir = normalize(_WorldSpaceCameraPos.xyz-mul(unity_ObjectToWorld,v.vertex).xyz);
-				//Specular = Atten * i_incoming * k_specular * max(0,R · v) ^ n_shiness
-				float3 SpecularReflection = AttenSpecular * _LightColor0.xyz * _SpecColor.rgb * pow(max(0.0 , dot(WorldSpaceReflectionDir,WorldSpaceViewDir)),_Shininess);
-
-
-
-				//-----------------------
-				//4、计算环境光
-				float3 ambient = UNITY_LIGHTMODEL_AMBIENT.rgb;
-
-				//-----------------------
-				//5、最终颜色
-				o.color = float4(DiffuseReflection + SpecularReflection+ ambient,1.0);
+				o.worldSpaceNormalDir = normalize( mul( float4(v.normal,0.0),unity_WorldToObject).xyz );
 
 				return o;
 			}
@@ -96,8 +74,43 @@ Shader "ShaderSuperb/Session1/11-Specular Reflection in Vertex"
 			//fragment函数需返回对应屏幕上该像素的颜色值
 			float4 frag(v2f i):SV_Target
 			{
-				//直接使用顶点输出的颜色
-				return i.color;
+
+				//-----------------------------------
+				//0、参数准备
+				//世界空间中法线方向
+				float3 WorldSpaceNormalDir = normalize(i.worldSpaceNormalDir);
+				//平行光源的光线方向
+				float3 WorldSpaceLightDir =  normalize( _WorldSpaceLightPos0.xyz);
+
+				//-----------------------------------
+				//1、计算Diffuse项
+				//lambert漫反射的颜色=i_diffuse * i_incoming * k_diffuse *max(0,N*L)
+				float AttenDiffuse = 1.0;
+				float3 DiffuseReflection = AttenDiffuse *  _DiffuseColor.rgb * _LightColor0.rgb * max(0,dot(WorldSpaceNormalDir, WorldSpaceLightDir));
+
+
+				//----------------------------------
+				//2、计算Specular项
+				float AttenSpecular = 1.0;
+				//世界空间中镜面反射方向
+				float3 WorldSpaceReflectionDir = normalize(reflect(-WorldSpaceLightDir,WorldSpaceNormalDir));
+				//世界空间中观察方向=归一化（世界空间中摄像机坐标-世界空间中顶点坐标）
+				float3 WorldSpaceViewDir = normalize(_WorldSpaceCameraPos.xyz-i.worldSpaceVertexPos);
+				//Specular = Atten * i_incoming * k_specular * max(0,R · v) ^ n_shiness
+				float3 SpecularReflection = AttenSpecular * _LightColor0.xyz * _SpecColor.rgb * pow(max(0.0 , dot(WorldSpaceReflectionDir,WorldSpaceViewDir)),_Shininess);
+
+				//----------------------------------
+				//3、获取环境光项
+				float3 ambient = UNITY_LIGHTMODEL_AMBIENT.rgb;
+
+				//----------------------------------
+				//4、最终颜色
+				//透明shader. Step 3. 返回小于1的alpha通道
+				float4 FinalColor = float4(DiffuseReflection + SpecularReflection+ ambient,_DiffuseColor.a);
+
+
+				//输出最终颜色
+				return FinalColor;
 			}
 
 			ENDCG
