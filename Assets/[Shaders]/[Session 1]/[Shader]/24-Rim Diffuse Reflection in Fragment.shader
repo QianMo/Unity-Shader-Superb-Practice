@@ -1,6 +1,6 @@
 ﻿//基于8-Diffuse Reflection in Fragment
 
-Shader "ShaderSuperb/Session1/23-Simple Vertex Rim"
+Shader "ShaderSuperb/Session1/24-Rim Diffuse Reflection in Fragment"
 {
 	Properties
 	{
@@ -90,8 +90,6 @@ Shader "ShaderSuperb/Session1/23-Simple Vertex Rim"
 
 				//环境光颜色
 				float3 AmbientLight = UNITY_LIGHTMODEL_AMBIENT.rgb;
-
-
 
 				//世界空间中观察方向=归一化（世界空间中摄像机坐标-世界空间中顶点坐标）
 				float3 WorldSpaceViewDir = normalize(_WorldSpaceCameraPos.xyz-i.worldSpaceVertexPos);
