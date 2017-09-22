@@ -99,7 +99,7 @@ Shader "ShaderSuperb/Session1/24-Rim Diffuse Reflection in Fragment"
 				//计算出边缘自发光强度  
 				float3 Emissive = _RimColor.rgb * pow(Rim , _RimPower) *_RimIntensity; 
 
-					//最终颜色
+				//最终颜色
 				float4 FinalColor = float4(DiffuseReflectionLight + AmbientLight + Emissive,1.0);
 
 				return FinalColor;
