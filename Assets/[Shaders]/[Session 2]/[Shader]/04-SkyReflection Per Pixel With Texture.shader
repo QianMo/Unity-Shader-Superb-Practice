@@ -2,10 +2,12 @@
 
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-Shader "ShaderSuperb/Session1/03-SkyReflection Per Pixel Normal"
+Shader "ShaderSuperb/Session1/04-SkyReflection Per Pixel With Texture"
 {
   Properties 
     {
+        _MainTex("Base texture", 2D) = "white" {}
+        _OcclusionMap("Occlusion", 2D) = "white" {}
         // normal map texture on the material,
         // default to dummy "flat surface" normalmap
         _BumpMap("Normal Map", 2D) = "bump" {}
@@ -20,9 +22,13 @@ Shader "ShaderSuperb/Session1/03-SkyReflection Per Pixel Normal"
             #pragma fragment frag
             #include "UnityCG.cginc"
 
-            // normal map texture from shader properties
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+            sampler2D _OcclusionMap;
+            float4 _OcclusionMap_ST;
             sampler2D _BumpMap;
             uniform float4 _BumpMap_ST;
+
             //---------------------------------
             //顶点输入结构体
             //---------------------------------
@@ -31,7 +37,9 @@ Shader "ShaderSuperb/Session1/03-SkyReflection Per Pixel Normal"
                 float4 vertex:POSITION;//从Unity获取顶点位置
                 float3 normal:NORMAL;//从Unity获取法线坐标
                 float4 tangent : TANGENT;//从Unity获取切线坐标
-                float2 uv : TEXCOORD0; //从Unity获取第一组纹理坐标
+                float4 texcoordMainTex : TEXCOORD0; //从Unity获取第一组纹理坐标
+                float4 texcoordBumpMap : TEXCOORD1; //从Unity获取第一组纹理坐标
+                float4 texcoordOcclusionMap : TEXCOORD2; //从Unity获取第一组纹理坐标
             };
 
 
@@ -49,7 +57,10 @@ Shader "ShaderSuperb/Session1/03-SkyReflection Per Pixel Normal"
                 half3 objectToWorldVector2 : TEXCOORD3; // tangent.z, bitangent.z, normal.z
                 
                 // texture coordinate for the normal map
-                float2 uv : TEXCOORD4;
+                float2 uvMainTex : TEXCOORD4; 
+                float2 uvBumpMap : TEXCOORD5; 
+                float2 uvOcclusionMap : TEXCOORD6;
+
                 float4 pos : SV_POSITION;
             };
 
@@ -71,8 +82,9 @@ Shader "ShaderSuperb/Session1/03-SkyReflection Per Pixel Normal"
                 o.objectToWorldVector0 = half3(wTangent.x, wBitangent.x, wNormal.x);
                 o.objectToWorldVector1 = half3(wTangent.y, wBitangent.y, wNormal.y);
                 o.objectToWorldVector2 = half3(wTangent.z, wBitangent.z, wNormal.z);
-                o.uv = TRANSFORM_TEX(v.uv,_BumpMap);
-                
+                o.uvMainTex = TRANSFORM_TEX(v.texcoordMainTex,_MainTex);
+                o.uvBumpMap = TRANSFORM_TEX(v.texcoordBumpMap,_BumpMap);
+                o.uvOcclusionMap = TRANSFORM_TEX(v.texcoordOcclusionMap,_OcclusionMap);
                 return o;
             }
         
@@ -80,7 +92,7 @@ Shader "ShaderSuperb/Session1/03-SkyReflection Per Pixel Normal"
             {
 
                 // sample the normal map, and decode from the Unity encoding
-                half3 tnormal = UnpackNormal(tex2D(_BumpMap, i.uv));
+                half3 tnormal = UnpackNormal(tex2D(_BumpMap, i.uvBumpMap));
                 // transform normal from tangent to world space
                 half3 worldSpaceNormalDir;
                 worldSpaceNormalDir.x = dot(i.objectToWorldVector0, tnormal);
@@ -96,6 +108,13 @@ Shader "ShaderSuperb/Session1/03-SkyReflection Per Pixel Normal"
                 // 
                 fixed4 c = 0;
                 c.rgb = skyColor;
+
+                // modulate sky color with the base texture, and the occlusion map
+                fixed3 baseColor = tex2D(_MainTex, i.uvMainTex).rgb;
+                fixed occlusion = tex2D(_OcclusionMap, i.uvOcclusionMap).r;
+                c.rgb *= baseColor;
+                c.rgb *= occlusion;
+
                 return c;
             }
             ENDCG
