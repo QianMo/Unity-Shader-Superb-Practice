@@ -2,7 +2,7 @@
 
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-Shader "ShaderSuperb/Session1/1-SkyReflection"
+Shader "ShaderSuperb/Session1/02-SkyReflection Per Pixel"
 {
     SubShader
     {
@@ -27,8 +27,10 @@ Shader "ShaderSuperb/Session1/1-SkyReflection"
             //---------------------------------
             //顶点输出，片元输入结构体
             //---------------------------------
-            struct v2f {
-                half3 worldSpaceReflectVector : TEXCOORD0;
+            struct v2f 
+            {
+                float3 worldSpaceVertexPos : TEXCOORD0;
+                float3 worldSpaceNormalDir : TEXCOORD1;
                 float4 pos : SV_POSITION;
             };
 
@@ -38,22 +40,18 @@ Shader "ShaderSuperb/Session1/1-SkyReflection"
                 //模型空间的坐标转换为裁剪空间中坐标
                 o.pos = UnityObjectToClipPos(v.vertex);
                 // 世界空间中顶点坐标
-                float3 worldSpaceVertexPos = mul(unity_ObjectToWorld, v.vertex).xyz;
-                // 世界空间中视图方向
-                // Computes world space view direction, from object space position: 
-                //函数定义 UnityCG.cginc：inline float3 UnityWorldSpaceViewDir( in float3 worldPos ){return _WorldSpaceCameraPos.xyz - worldPos;}
-                float3 worldSpaceViewDir = normalize(UnityWorldSpaceViewDir(worldSpaceVertexPos));
+                o.worldSpaceVertexPos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 // 世界空间中法线方向 || world space normal
-                float3 worldSpaceNormalDir = UnityObjectToWorldNormal(v.normal);
-                // 世界空间反射向量 || world space reflection vector
-                o.worldSpaceReflectVector = reflect(-worldSpaceViewDir, worldSpaceNormalDir);
+                o.worldSpaceNormalDir = UnityObjectToWorldNormal(v.normal);
                 return o;
             }
         
             fixed4 frag (v2f i) : SV_Target
             {
+                float3 worldSpaceViewDir = normalize(UnityWorldSpaceViewDir(i.worldSpaceVertexPos));
+                float3 worldSpaceReflectVector = reflect(-worldSpaceViewDir, i.worldSpaceNormalDir);
                 // 使用世界空间反射向量采样默认的立方体贴图 || sample the default reflection cubemap, using the reflection vector
-                half4 skyData = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, i.worldSpaceReflectVector);
+                half4 skyData = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, worldSpaceReflectVector);
                 // 解码cubemap成颜色值 || decode cubemap data into actual color
                 half3 skyColor = DecodeHDR (skyData, unity_SpecCube0_HDR);
                 // 
