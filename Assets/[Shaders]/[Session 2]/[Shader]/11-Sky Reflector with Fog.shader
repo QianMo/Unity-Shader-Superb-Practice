@@ -4,6 +4,11 @@
 
 Shader "ShaderSuperb/Session2/1-SkyReflection"
 {
+    Properties
+    {
+        _FogUVFactor("fogUVFactor",float) = 1.0
+    }
+
     SubShader
     {
         Pass
@@ -11,8 +16,13 @@ Shader "ShaderSuperb/Session2/1-SkyReflection"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+
+            //Needed for fog variation to be compiled.
+            #pragma multi_compile_fog
+
             #include "UnityCG.cginc"
 
+            float _FogUVFactor;
 
             //---------------------------------
             //顶点输入结构体
@@ -30,6 +40,9 @@ Shader "ShaderSuperb/Session2/1-SkyReflection"
             struct v2f {
                 half3 worldSpaceReflectVector : TEXCOORD0;
                 float4 pos : SV_POSITION;
+
+                //Used to pass fog amount around number should be a free texcoord.
+                UNITY_FOG_COORDS(1)
             };
 
             v2f vert (a2v v)
@@ -47,18 +60,28 @@ Shader "ShaderSuperb/Session2/1-SkyReflection"
                 float3 worldSpaceNormalDir = UnityObjectToWorldNormal(v.normal);
                 // 世界空间反射向量 || world space reflection vector
                 o.worldSpaceReflectVector = reflect(-worldSpaceViewDir, worldSpaceNormalDir);
+
+                //Compute fog amount from clip space position.
+                UNITY_TRANSFER_FOG(o,o.pos);
+
                 return o;
             }
         
             fixed4 frag (v2f i) : SV_Target
             {
-                // 使用世界空间反射向量采样默认的立方体贴图 || sample the default reflection cubemap, using the reflection vector
+                // 使用世界空间反射向量采样默认的立方体贴图 || sample the default reflection cubemap, using the reflection vectorF
                 half4 skyData = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, i.worldSpaceReflectVector);
                 // 解码cubemap成颜色值 || decode cubemap data into actual color
                 half3 skyColor = DecodeHDR (skyData, unity_SpecCube0_HDR);
                 // 
                 fixed4 c = 0;
                 c.rgb = skyColor;
+
+                //fixed4 color = fixed4(i.worldSpaceReflectVector.xy,0,0);
+                //c.rgb = _FogColor*skyColor;
+                 //Apply fog (additive pass are automatically handled)
+                UNITY_APPLY_FOG(i.fogCoord *_FogUVFactor, c); 
+                
                 return c;
             }
             ENDCG

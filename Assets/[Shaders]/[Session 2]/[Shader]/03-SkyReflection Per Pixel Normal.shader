@@ -2,7 +2,7 @@
 
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-Shader "ShaderSuperb/Session1/03-SkyReflection Per Pixel Normal"
+Shader "ShaderSuperb/Session2/03-SkyReflection Per Pixel Normal"
 {
   Properties 
     {

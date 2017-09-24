@@ -2,7 +2,7 @@
 
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-Shader "ShaderSuperb/Session1/02-SkyReflection Per Pixel"
+Shader "ShaderSuperb/Session2/02-SkyReflection Per Pixel"
 {
     SubShader
     {
