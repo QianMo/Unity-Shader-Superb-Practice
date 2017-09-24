@@ -77,9 +77,6 @@ Shader "ShaderSuperb/Session2/1-SkyReflection"
                 fixed4 c = 0;
                 c.rgb = skyColor;
 
-                //fixed4 color = fixed4(i.worldSpaceReflectVector.xy,0,0);
-                //c.rgb = _FogColor*skyColor;
-                 //Apply fog (additive pass are automatically handled)
                 UNITY_APPLY_FOG(i.fogCoord *_FogUVFactor, c); 
                 
                 return c;
