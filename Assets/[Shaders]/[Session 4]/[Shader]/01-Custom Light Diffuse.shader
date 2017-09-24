@@ -1,6 +1,6 @@
 //https://docs.unity3d.com/Manual/SL-SurfaceShaderLightingExamples.html
 
-Shader "ShaderSuperb/Session3/01-Custom Light Diffuse"
+Shader "ShaderSuperb/Session4/01-Custom Light Diffuse"
 {
 	Properties 
 	{

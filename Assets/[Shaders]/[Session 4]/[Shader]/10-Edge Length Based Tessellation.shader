@@ -3,7 +3,7 @@
 //We can also change tessellation level based on distance from the camera. For example, we could define two distance values; 
 //distance at which tessellation is at maximum (say, 10 meters), and distance towards which tessellation level gradually decreases (say, 20 meters).
 
-Shader "ShaderSuperb/Session3/10-Edge Length Based Tessellation"
+Shader "ShaderSuperb/Session4/10-Edge Length Based Tessellation"
 {
 	Properties 
 	{

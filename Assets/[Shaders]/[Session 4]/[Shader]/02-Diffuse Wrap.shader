@@ -3,7 +3,7 @@
 //The following example shows Wrapped Diffuse, a modification of Diffuse lighting where illumination “wraps around” the edges of objects. 
 //It’s useful for simulating subsurface scattering effects.
 
-Shader "ShaderSuperb/Session3/02-Diffuse Wrap"
+Shader "ShaderSuperb/Session4/02-Diffuse Wrap"
 {
 	Properties 
 	{

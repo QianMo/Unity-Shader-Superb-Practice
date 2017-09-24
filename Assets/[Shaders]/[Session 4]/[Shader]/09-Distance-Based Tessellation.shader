@@ -5,7 +5,7 @@
 
 // Instead, tessellation levels could be computed based on triangle edge length on the screen - the longer the edge, the larger tessellation factor should be applied.
 
-Shader "ShaderSuperb/Session3/09-Distance-Based Tessellation"
+Shader "ShaderSuperb/Session4/09-Distance-Based Tessellation"
 {
 	Properties 
 	{

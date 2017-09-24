@@ -3,7 +3,7 @@
 //The following example shows a “Ramp” lighting model that uses a Texture ramp to define how surfaces respond to the angles between the light and the normal. 
 //This can be used for a variety of effects, and is especially effective when used with Toon lighting.
 
-Shader "ShaderSuperb/Session3/03-Toon Ramp"
+Shader "ShaderSuperb/Session4/03-Toon Ramp"
 {
 	Properties 
 	{

@@ -1,6 +1,6 @@
 //https://docs.unity3d.com/Manual/SL-SurfaceShaderLightingExamples.html
 
-Shader "ShaderSuperb/Session3/06-Custom GI ToneMappe"
+Shader "ShaderSuperb/Session4/06-Custom GI ToneMappe"
 {
 	Properties 
 	{

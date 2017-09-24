@@ -5,7 +5,7 @@
 
 // Unity’s surface shaders can compute Phong tessellation automatically using tessphong:VariableName compilation directive. Here’s an example shader:
 
-Shader "ShaderSuperb/Session3/11-Phong Tessellation"
+Shader "ShaderSuperb/Session4/11-Phong Tessellation"
 {
 	Properties 
 	{

@@ -1,6 +1,6 @@
 //https://docs.unity3d.com/Manual/SL-SurfaceShaderLightingExamples.html
 
-Shader "ShaderSuperb/Session3/05-Custom GI"
+Shader "ShaderSuperb/Session4/05-Custom GI"
 {
 	Properties 
 	{

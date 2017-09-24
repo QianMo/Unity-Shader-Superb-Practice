@@ -2,7 +2,7 @@
 
 //No GPU tessellation, displacement in the vertex modifier
 
-Shader "ShaderSuperb/Session3/08-Fixed Amount Of Tessellation"
+Shader "ShaderSuperb/Session4/08-Fixed Amount Of Tessellation"
 {
 	Properties 
 	{

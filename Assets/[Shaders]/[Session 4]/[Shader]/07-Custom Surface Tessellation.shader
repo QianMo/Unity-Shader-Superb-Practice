@@ -2,7 +2,7 @@
 
 //No GPU tessellation, displacement in the vertex modifier
 
-Shader "ShaderSuperb/Session3/07-Custom Surface Tessellation"
+Shader "ShaderSuperb/Session4/07-Custom Surface Tessellation"
 {
 	Properties 
 	{

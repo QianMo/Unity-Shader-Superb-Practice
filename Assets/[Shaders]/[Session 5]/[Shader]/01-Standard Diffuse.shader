@@ -1,6 +1,6 @@
 //https://docs.unity3d.com/Manual/SL-SurfaceShaderLightingExamples.html
 
-Shader "ShaderSuperb/Session4/04-Simple Specular"
+Shader "ShaderSuperb/Session3/01-Standard Diffuse"
 {
 	Properties 
 	{
@@ -12,19 +12,14 @@ Shader "ShaderSuperb/Session4/04-Simple Specular"
 		Tags { "RenderType" = "Opaque" }
 
 		CGPROGRAM
-		#pragma surface surf SimpleSpecular
+		
+		#pragma surface surf SimpleLambert
 
-		half4 LightingSimpleSpecular (SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) 
+		half4 LightingSimpleLambert (SurfaceOutput s, half3 lightDir, half atten) 
 		{
-			half3 h = normalize (lightDir + viewDir);
-
-			half diff = max (0, dot (s.Normal, lightDir));
-
-			float nh = max (0, dot (s.Normal, h));
-			float spec = pow (nh, 48.0);
-
+			half NdotL = dot (s.Normal, lightDir);
 			half4 c;
-			c.rgb = (s.Albedo * _LightColor0.rgb * diff + _LightColor0.rgb * spec) * atten;
+			c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten);
 			c.a = s.Alpha;
 			return c;
 		}
