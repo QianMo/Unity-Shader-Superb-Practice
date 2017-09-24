@@ -2,7 +2,7 @@
 
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-Shader "ShaderSuperb/Session2/1-SkyReflection"
+Shader "ShaderSuperb/Session2/12-SkyReflection"
 {
     Properties
     {

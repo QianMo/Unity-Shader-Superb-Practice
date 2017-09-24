@@ -1,7 +1,7 @@
 ﻿//https://docs.unity3d.com/Manual/SL-VertexFragmentShaderExamples.html
 //要配合场景中雾效设置一起展现出效果
 
-Shader "ShaderSuperb/Session2/10-Fog" 
+Shader "ShaderSuperb/Session2/11-Fog" 
 {
 	Properties
 	{

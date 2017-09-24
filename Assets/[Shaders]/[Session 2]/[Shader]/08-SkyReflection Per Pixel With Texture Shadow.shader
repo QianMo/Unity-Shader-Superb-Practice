@@ -2,7 +2,7 @@
 
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-Shader "ShaderSuperb/Session2/07-SkyReflection Per Pixel With Texture Shadow"
+Shader "ShaderSuperb/Session2/08-SkyReflection Per Pixel With Texture Shadow"
 {
   Properties 
     {

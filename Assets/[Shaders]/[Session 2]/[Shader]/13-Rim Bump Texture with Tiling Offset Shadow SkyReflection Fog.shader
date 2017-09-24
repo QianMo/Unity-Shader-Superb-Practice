@@ -1,6 +1,6 @@
 ﻿// improve from Session1/27-Rim Bump Texture with Tiling Offset
 
-Shader "ShaderSuperb/Session2/09-Rim Bump Texture with Tiling Offset Shadow SkyReflection"
+Shader "ShaderSuperb/Session2/13-Rim Bump Texture with Tiling Offset Shadow SkyReflection Fog"
 {
     Properties
     {
