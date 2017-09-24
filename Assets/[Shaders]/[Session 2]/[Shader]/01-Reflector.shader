@@ -50,16 +50,16 @@ Shader "ShaderSuperb/Session2/1-SkyReflection"
                 return o;
             }
         
-            fixed4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
                 // 使用世界空间反射向量采样默认的立方体贴图 || sample the default reflection cubemap, using the reflection vector
-                half4 skyData = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, i.worldSpaceReflectVector);
+                float4 skyData = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, i.worldSpaceReflectVector);
                 // 解码cubemap成颜色值 || decode cubemap data into actual color
-                half3 skyColor = DecodeHDR (skyData, unity_SpecCube0_HDR);
+                float3 skyColor = DecodeHDR (skyData, unity_SpecCube0_HDR);
                 // 
-                fixed4 c = 0;
-                c.rgb = skyColor;
-                return c;
+                // fixed4 c = 0;
+                // c.rgb = skyColor;
+                return float4(skyColor,1);
             }
             ENDCG
         }
