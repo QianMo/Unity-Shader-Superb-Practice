@@ -32,7 +32,10 @@ Shader "ShaderSuperb/Session5/04-Fixed Function Light Texture"
 
 			SetTexture [_MainTex] 
 			{
+				//https://docs.unity3d.com/Manual/SL-SetTexture.html
+				//Combine ColorPart, AlphaPart
 				Combine texture * primary
+				//Combine texture * primary DOUBLE, texture * primary
 			}
 		}
 	}

@@ -5,8 +5,8 @@ Shader "ShaderSuperb/Session5/07-Blend Texture Color"
 
 	Properties 
 	{
-		_MainTex ("将混合的纹理", 2D) = "black" {}  
-		_Color ("主颜色", Color) = (1,1,1,0)    
+		_MainTex ("Texture", 2D) = "black" {}  
+		_Color ("Main Color", Color) = (1,1,1,0)    
 	}
 
 	SubShader 
