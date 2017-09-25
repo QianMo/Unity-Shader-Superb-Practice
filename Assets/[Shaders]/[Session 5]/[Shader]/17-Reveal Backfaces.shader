@@ -5,6 +5,8 @@ Shader "ShaderSuperb/Session5/17-Reveal Backfaces"
 	Properties 
 	{
 		_MainTex ("Base (RGB)", 2D) = "white" { }
+		//反面的颜色
+		_innerColor("Inner Color",Color)=(0.6,0.6,0.6,1)
 	}
 	SubShader 
 	{
@@ -12,6 +14,7 @@ Shader "ShaderSuperb/Session5/17-Reveal Backfaces"
 		// We use a simple white material, and apply the main texture.
 		Pass 
 		{
+			Cull Back
 			Material 
 			{
 				Diffuse (1,1,1,1)
@@ -30,7 +33,7 @@ Shader "ShaderSuperb/Session5/17-Reveal Backfaces"
 		// irritating color in the world: BRIGHT PINK!
 		Pass 
 		{
-			Color (0.1,0,0.1,1)
+			Color [_innerColor]
 			Cull Front
 		}
 	}
