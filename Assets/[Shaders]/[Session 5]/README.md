@@ -1,5 +1,7 @@
 
-## Session 5 - Fixed Function Shaders 
+## Session 5
+
+- Fixed Function Shaders 
 
 
 
