@@ -1,5 +1,5 @@
 
-Shader "ShaderSuperb/Session6/02-Diffuse"
+Shader "ShaderSuperb/Session6/02-Texture"
 {
 	Properties 
 	{
