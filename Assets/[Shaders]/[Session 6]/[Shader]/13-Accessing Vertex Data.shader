@@ -1,4 +1,3 @@
-//http://wiki.unity3d.com/index.php?title=Anisotropic_Highlight_Shader
 
 Shader "ShaderSuperb/Session6/13-Accessing Vertex Data"
 {
