@@ -1,4 +1,3 @@
-//http://wiki.unity3d.com/index.php?title=Anisotropic_Highlight_Shader
 
 Shader "ShaderSuperb/Session6/15-Extrusion"
 {
@@ -25,8 +24,6 @@ Shader "ShaderSuperb/Session6/15-Extrusion"
 		{
 			v.vertex.xyz += v.normal * _Amount;
 		}
-
-		
 
 		void surf(Input IN, inout SurfaceOutput o) 
 		{
