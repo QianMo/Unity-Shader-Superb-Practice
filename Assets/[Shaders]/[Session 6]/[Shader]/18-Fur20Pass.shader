@@ -33,11 +33,13 @@ Shader "ShaderSuperb/Session6/18-Fur20Pass"
 		half _Glossiness;
 		half _Metallic;
 
-		struct Input {
+		struct Input 
+		{
 			float2 uv_MainTex;
 		};
 
-		void surf (Input IN, inout SurfaceOutputStandard o) {
+		void surf (Input IN, inout SurfaceOutputStandard o) 
+		{
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 			o.Albedo = c.rgb;
 			o.Metallic = _Metallic;
