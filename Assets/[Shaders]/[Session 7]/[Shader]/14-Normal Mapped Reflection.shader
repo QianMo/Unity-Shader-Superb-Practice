@@ -1,42 +1,45 @@
-﻿Shader "ShaderSuperb/Session7/13-Masked Reflection"
+﻿Shader "ShaderSuperb/Session7/14-Normal Mapped Reflection"
 {
 	Properties 
 	{
 		_MainTint ("Diffuse Tint", Color) = (1,1,1,1)
 		_MainTex ("Base (RGB)", 2D) = "white" {}
-		_ReflAmount ("Reflection Amount", Range(0, 1)) = 1
+		_NormalMap ("Normal Map", 2D) = "bump" {}
 		_Cubemap ("Cubemap", CUBE) = ""{}
-		_ReflMask ("Reflection Mask", 2D) = ""{}
+		_ReflAmount ("Reflection Amount", Range(0,1)) = 0.5
 	}
 	
-	SubShader 
-	{
+	SubShader
+	 {
 		Tags { "RenderType"="Opaque" }
 		LOD 200
 		
 		CGPROGRAM
 		#pragma surface surf Lambert
 
-		sampler2D _MainTex;
-		sampler2D _ReflMask;
 		samplerCUBE _Cubemap;
+		sampler2D _MainTex;
+		sampler2D _NormalMap;
 		float4 _MainTint;
 		float _ReflAmount;
 
 		struct Input 
 		{
 			float2 uv_MainTex;
+			float2 uv_NormalMap;
 			float3 worldRefl;
+			INTERNAL_DATA
 		};
 
 		void surf (Input IN, inout SurfaceOutput o) 
 		{
 			half4 c = tex2D (_MainTex, IN.uv_MainTex);
-			float3 reflection = texCUBE(_Cubemap, IN.worldRefl).rgb;
-			float4 reflMask = tex2D(_ReflMask, IN.uv_MainTex);
-	
+			
+			float3 normals = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap)).rgb;
+			o.Normal = normals;
+			
+			o.Emission = texCUBE (_Cubemap, WorldReflectionVector (IN, o.Normal)).rgb * _ReflAmount;
 			o.Albedo = c.rgb * _MainTint;
-			o.Emission = (reflection * reflMask.r) * _ReflAmount;
 			o.Alpha = c.a;
 		}
 		ENDCG

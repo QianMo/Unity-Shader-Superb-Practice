@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session7/11-Metallic Versus Soft Specular"
+﻿Shader "ShaderSuperb/Session7/12-Simple Reflection"
 {
 	Properties 
 	{
