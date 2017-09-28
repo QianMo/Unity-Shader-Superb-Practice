@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session6/01-Basic Diffuse"
+﻿Shader "ShaderSuperb/Session7/01-Basic Diffuse"
 {
 	Properties 	
 	{

@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session6/09-Texture Blending"
+﻿Shader "ShaderSuperb/Session7/09-Texture Blending"
 {
 	Properties 
 	{

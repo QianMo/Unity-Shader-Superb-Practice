@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session6/04-BRDF Diffuse"
+﻿Shader "ShaderSuperb/Session7/04-BRDF Diffuse"
 {
 	Properties 
 	{

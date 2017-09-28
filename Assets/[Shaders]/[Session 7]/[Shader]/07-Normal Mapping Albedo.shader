@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session6/07-Normal Mapping Albedo"
+﻿Shader "ShaderSuperb/Session7/07-Normal Mapping Albedo"
 {
 	Properties 
 	{

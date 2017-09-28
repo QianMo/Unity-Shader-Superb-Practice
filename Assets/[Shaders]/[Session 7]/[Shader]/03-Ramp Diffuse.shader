@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session6/03-Ramp Diffuse"
+﻿Shader "ShaderSuperb/Session7/03-Ramp Diffuse"
 {
 	Properties 
 	{

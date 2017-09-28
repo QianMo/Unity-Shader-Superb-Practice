@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session6/05-BRDF Texuture"
+﻿Shader "ShaderSuperb/Session7/05-BRDF Texuture"
 {
 	Properties 
 	{

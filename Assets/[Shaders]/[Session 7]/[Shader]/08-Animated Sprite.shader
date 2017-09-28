@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session6/08-Animated Sprite"
+﻿Shader "ShaderSuperb/Session7/08-Animated Sprite"
 {
 	Properties 
 	{

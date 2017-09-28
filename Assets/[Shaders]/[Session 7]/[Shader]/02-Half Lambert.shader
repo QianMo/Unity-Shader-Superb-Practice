@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session6/02-Half Lambert"
+﻿Shader "ShaderSuperb/Session7/02-Half Lambert"
 {
 	Properties 	
 	{
