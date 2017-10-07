@@ -1,4 +1,5 @@
 ﻿
+
 // https://en.wikibooks.org/wiki/Cg_Programming/Unity/Brushed_Metal
 
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
@@ -7,7 +8,7 @@
 
 
 
-Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
+Shader "ShaderSuperb/Session9/06-Anisotropic Lighting Distort"
 {
 	Properties 
 	{
@@ -16,12 +17,15 @@ Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
 		_AniX ("Anisotropic X", Range(0.0,2.0)) = 1.0
 		_AniY ("Anisotropic Y", Range(0.0,2.0)) = 1.0
 		_Shininess ("Shininess", Float) = 1.0
+		_Distort ("Distort", Range(-1.0,1.0)) = 0.0
 	}
+
 	SubShader 
 	{
 		Pass 
 		{
 			Tags {"LightMode" = "ForwardBase"}
+
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -32,6 +36,7 @@ Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
 			uniform fixed _AniX;
 			uniform fixed _AniY;
 			uniform half _Shininess;
+			uniform half _Distort;
 			
 			//unity defined variables
 			uniform half4 _LightColor0;
@@ -43,6 +48,7 @@ Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
 				half3 normal : NORMAL;
 				half4 tangent : TANGENT;
 			};
+			
 			struct vertexOutput
 			{
 				half4 pos : SV_POSITION;
@@ -60,7 +66,7 @@ Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
 				//normalDirection
 				o.normalDir = normalize( mul( half4( v.normal, 0.0 ), unity_WorldToObject ).xyz );
 				//tangent direction
-				o.tangentDir = normalize( mul( unity_ObjectToWorld, half4(v.tangent.xyz, 0.0) ).xyz );
+				o.tangentDir = normalize( mul( unity_ObjectToWorld, half4(v.tangent.xyz, _Distort) ).xyz );
 				
 				//unity transform position
 				o.pos = UnityObjectToClipPos(v.vertex);
@@ -82,8 +88,7 @@ Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
 			//fragment function
 			fixed4 frag(vertexOutput i) : COLOR
 			{
-				// https://en.wikibooks.org/wiki/Cg_Programming/Unity/Brushed_Metal
-
+				
 				//Lighting
 				fixed3 h = normalize(i.lightDir.xyz + i.viewDir); 
 				half3 binormalDir = cross(i.normalDir,i.tangentDir);

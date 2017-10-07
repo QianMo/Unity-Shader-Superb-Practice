@@ -1,22 +1,23 @@
-﻿
-// https://en.wikibooks.org/wiki/Cg_Programming/Unity/Brushed_Metal
-
-// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 // Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
 
-Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
+Shader "ShaderSuperb/Session9/09-Flat Translucency"
 {
 	Properties 
 	{
 		_Color ("Color Tint", Color) = (1.0,1.0,1.0,1.0)
 		_SpecColor ("Specular Color", Color) = (1.0,1.0,1.0,1.0)
-		_AniX ("Anisotropic X", Range(0.0,2.0)) = 1.0
-		_AniY ("Anisotropic Y", Range(0.0,2.0)) = 1.0
-		_Shininess ("Shininess", Float) = 1.0
+		_Shininess ("Shininess", Float) = 10.0
+		_BackScatter ("Back Translucent color", Color) = (1.0,1.0,1.0,1.0)
+		_Translucence ("Forward Translucent Color", Color) = (1.0,1.0,1.0,1.0)
+		_Intensity ("Translucent Intensity", Float) = 10.0
 	}
+	
 	SubShader 
 	{
 		Pass 
@@ -28,10 +29,11 @@ Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
 			
 			//user defined variables
 			uniform fixed4 _Color;
-			uniform fixed4 _SpecColor;
-			uniform fixed _AniX;
-			uniform fixed _AniY;
-			uniform half _Shininess;
+	        uniform fixed4 _SpecColor; 
+	        uniform half _Shininess; 
+	        uniform fixed4 _BackScatter; 
+	        uniform fixed4 _Translucence; 
+	        uniform half _Intensity; 
 			
 			//unity defined variables
 			uniform half4 _LightColor0;
@@ -41,7 +43,6 @@ Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
 			{
 				half4 vertex : POSITION;
 				half3 normal : NORMAL;
-				half4 tangent : TANGENT;
 			};
 			struct vertexOutput
 			{
@@ -49,7 +50,6 @@ Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
 				fixed3 normalDir : TEXCOORD0;
 				fixed4 lightDir : TEXCOORD1;
 				fixed3 viewDir : TEXCOORD2;
-				fixed3 tangentDir : TEXCOORD3;
 			};
 			
 			//vertex Function
@@ -59,8 +59,6 @@ Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
 				
 				//normalDirection
 				o.normalDir = normalize( mul( half4( v.normal, 0.0 ), unity_WorldToObject ).xyz );
-				//tangent direction
-				o.tangentDir = normalize( mul( unity_ObjectToWorld, half4(v.tangent.xyz, 0.0) ).xyz );
 				
 				//unity transform position
 				o.pos = UnityObjectToClipPos(v.vertex);
@@ -82,25 +80,20 @@ Shader "ShaderSuperb/Session9/05-Anisotropic Lighting"
 			//fragment function
 			fixed4 frag(vertexOutput i) : COLOR
 			{
-				// https://en.wikibooks.org/wiki/Cg_Programming/Unity/Brushed_Metal
-
+				
 				//Lighting
-				fixed3 h = normalize(i.lightDir.xyz + i.viewDir); 
-				half3 binormalDir = cross(i.normalDir,i.tangentDir);
-				
 				//dot product
-				fixed nDotL = dot(i.normalDir, i.lightDir.xyz);
-				fixed nDotH = dot(i.normalDir, h);
-				fixed nDotV = dot(i.normalDir, i.viewDir);
-				fixed tDotHX = dot(i.tangentDir, h) / _AniX;
-				fixed bDotHY = dot(binormalDir, h) / _AniY;
+				fixed nDotL = saturate(dot(i.normalDir, i.lightDir.xyz));
+				//diffuse
+				fixed3 diffuseReflection = i.lightDir.w * _LightColor0 * nDotL;
+				//specular
+				fixed3 specularReflection = diffuseReflection * _SpecColor.xyz * pow( saturate( dot( reflect( -i.lightDir.xyz, i.normalDir ), i.viewDir ) ), _Shininess );
 				
-				//Diffuse
-				fixed3 diffuseReflection = i.lightDir.w * _LightColor0.xyz * saturate(nDotL);
-				//Specular
-				fixed3 specularReflection = diffuseReflection * _SpecColor.xyz * exp( -(tDotHX * tDotHX + bDotHY * bDotHY) ) * _Shininess;
+				//translucency
+				fixed3 backScatter = i.lightDir.w * _LightColor0.xyz * _BackScatter.xyz * saturate( dot( i.normalDir, -i.lightDir.xyz ) );
+				fixed3 translucence = i.lightDir.w * _LightColor0.xyz * _Translucence.xyz * pow( saturate( dot(-i.lightDir.xyz, i.viewDir) ), _Intensity );
 				
-				fixed3 lightFinal = specularReflection + diffuseReflection + UNITY_LIGHTMODEL_AMBIENT.xyz;
+				fixed3 lightFinal = diffuseReflection + specularReflection + backScatter + translucence + UNITY_LIGHTMODEL_AMBIENT.xyz;
 				
 				return fixed4(lightFinal * _Color.xyz, 1.0);
 			}
