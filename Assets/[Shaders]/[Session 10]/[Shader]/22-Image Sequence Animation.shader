@@ -5,9 +5,9 @@ Shader "ShaderSuperb/Session10/22-Image Sequence Animation"
 	{
 		_Color ("Color Tint", Color) = (1, 1, 1, 1)
 		_MainTex ("Image Sequence", 2D) = "white" {}
-    	_HorizontalAmount ("Horizontal Amount", Float) = 4
-    	_VerticalAmount ("Vertical Amount", Float) = 4
-    	_Speed ("Speed", Range(1, 100)) = 30
+		_HorizontalAmount ("Horizontal Amount", Float) = 4
+		_VerticalAmount ("Vertical Amount", Float) = 4
+		_Speed ("Speed", Range(1, 100)) = 30
 	}
 
 	SubShader 
