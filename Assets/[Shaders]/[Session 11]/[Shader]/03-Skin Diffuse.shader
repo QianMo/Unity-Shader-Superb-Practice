@@ -17,8 +17,8 @@ Shader "ShaderSuperb/Session11/03-Skin Diffuse"
 	SubShader 
 	{
 		Tags { "RenderType" = "Opaque" }
-	    LOD 400
-	    
+		LOD 400
+
 		CGPROGRAM
 		#pragma surface surf BumpSpecSkin
 
