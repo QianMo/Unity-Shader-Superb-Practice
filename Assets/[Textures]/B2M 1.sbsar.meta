@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 647972c244e0f1541865593c7e845bd1
-timeCreated: 1504168956
+timeCreated: 1507538904
 licenseType: Pro
 SubstanceImporter:
   serializedVersion: 5
@@ -582,8 +582,8 @@ SubstanceImporter:
     buildTargetSettings:
     - serializedVersion: 2
       buildTarget: 
-      textureWidth: 512
-      textureHeight: 512
+      textureWidth: 1024
+      textureHeight: 1024
       textureFormat: 0
       loadingBehavior: 1
   deletedPrototypes: []
