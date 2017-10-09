@@ -1,4 +1,6 @@
-﻿//http://wiki.unity3d.com/index.php/MatCap
+﻿//A bumped shader without lighting, for use with materials from programs like ZBrush.
+
+//http://wiki.unity3d.com/index.php/MatCap
 //reference:http://tsubakit1.hateblo.jp/entry/2016/06/30/073000
 //http://tsubakit1.hateblo.jp/entry/2016/06/30/073000
 
