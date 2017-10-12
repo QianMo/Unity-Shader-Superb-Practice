@@ -1,6 +1,6 @@
 ﻿
 
-Shader "ShaderSuperb/Session13/04-Transparent-Specular"
+Shader "ShaderSuperb/Session13/10-Transparent-Cutout-Specular"
 {
 	Properties 
 	{
@@ -8,15 +8,16 @@ Shader "ShaderSuperb/Session13/04-Transparent-Specular"
 		_SpecColor ("Specular Color", Color) = (0.5, 0.5, 0.5, 0)
 		_Shininess ("Shininess", Range (0.01, 1)) = 0.078125
 		_MainTex ("Base (RGB) TransGloss (A)", 2D) = "white" {}
+		_Cutoff ("Alpha cutoff", Range(0,1)) = 0.5
 	}
 
 	SubShader 
 	{
-		Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"}
+		Tags {"Queue"="AlphaTest" "IgnoreProjector"="True" "RenderType"="TransparentCutout"}
 		LOD 300
 
 		CGPROGRAM
-		#pragma surface surf BlinnPhong alpha:fade
+		#pragma surface surf BlinnPhong alphatest:_Cutoff
 
 		sampler2D _MainTex;
 		fixed4 _Color;
@@ -38,6 +39,6 @@ Shader "ShaderSuperb/Session13/04-Transparent-Specular"
 		ENDCG
 	}
 
-	Fallback "Legacy Shaders/Transparent/VertexLit"
+	Fallback "Legacy Shaders/Transparent/Cutout/VertexLit"
 }
 
