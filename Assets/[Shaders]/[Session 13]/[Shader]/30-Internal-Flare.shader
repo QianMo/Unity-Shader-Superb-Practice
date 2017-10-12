@@ -1,24 +1,15 @@
 ﻿
 
-Shader "ShaderSuperb/Session13/15-Flare"
+Shader "ShaderSuperb/Session13/30-Internal-Flare"
 {
-	Properties 
-	{
-		_MainTex ("Particle Texture", 2D) = "black" {}
-	}
-
 	SubShader 
 	{
-		Tags 
-		{
-			"Queue"="Transparent"
-			"IgnoreProjector"="True"
-			"RenderType"="Transparent"
-			"PreviewType"="Plane"
-		}
 
-		Cull Off Lighting Off ZWrite Off Ztest Always
+		Tags {"RenderType"="Overlay"}
+		ZWrite Off ZTest Always
+		Cull Off
 		Blend One One
+		ColorMask RGB
 
 		Pass 
 		{	
@@ -29,8 +20,7 @@ Shader "ShaderSuperb/Session13/15-Flare"
 
 			#include "UnityCG.cginc"
 
-			sampler2D _MainTex;
-			fixed4 _TintColor;
+			sampler2D _FlareTexture;
 			
 			struct appdata_t 
 			{
@@ -48,7 +38,7 @@ Shader "ShaderSuperb/Session13/15-Flare"
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
-			float4 _MainTex_ST;
+			float4 _FlareTexture_ST;
 			
 			v2f vert (appdata_t v)
 			{
@@ -57,20 +47,17 @@ Shader "ShaderSuperb/Session13/15-Flare"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.color = v.color;
-				o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
+				o.texcoord = TRANSFORM_TEX(v.texcoord, _FlareTexture);
 				return o;
 			}
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col;
-				fixed4 tex = tex2D(_MainTex, i.texcoord);
-				col.rgb = i.color.rgb * tex.rgb;
-				col.a = tex.a;
-				return col;
+				return tex2D(_FlareTexture, i.texcoord) * i.color;
 			}
+			
 			ENDCG 
 		}
-	} 	
+	}
 }
 
