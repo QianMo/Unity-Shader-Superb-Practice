@@ -15,7 +15,7 @@ Shader "ShaderSuperb/Session13/39-Internal-StencilWrite"
 			struct a2v 
 			{
 				float4 pos : POSITION;
-				UNITY_VERTEX_INPUT_INSTANCE_ID// necessary only if you want to access instanced properties in fragment Shader.
+				UNITY_VERTEX_INPUT_INSTANCE_ID// Use this in the vertex Shader input/output structure to define an instance ID. See SV_InstanceID for more information.
 			};
 
 			struct v2f 
