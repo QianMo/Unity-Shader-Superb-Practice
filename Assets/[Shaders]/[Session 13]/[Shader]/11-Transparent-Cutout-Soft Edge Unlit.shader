@@ -53,6 +53,7 @@ Shader "ShaderSuperb/Session13/11-Transparent-Cutout-Soft Edge Unlit"
 				fixed4 color : COLOR;
 				float2 texcoord : TEXCOORD0;
 				UNITY_FOG_COORDS(1)
+				//https://docs.unity3d.com/Manual/SinglePassStereoRenderingHoloLens.html
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 

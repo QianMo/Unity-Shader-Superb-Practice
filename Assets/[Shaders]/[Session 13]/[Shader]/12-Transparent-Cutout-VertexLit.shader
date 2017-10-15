@@ -1,4 +1,4 @@
-﻿
+
 
 Shader "ShaderSuperb/Session13/12-Transparent-Cutout-VertexLit"
 {
@@ -118,8 +118,11 @@ Shader "ShaderSuperb/Session13/12-Transparent-Cutout-VertexLit"
 
 			struct v2f 
 			{ 
+				//#define V2F_SHADOW_CASTER V2F_SHADOW_CASTER_NOPOS float4 pos : SV_POSITION
+				//加阴影 part 1
 				V2F_SHADOW_CASTER;
 				float2  uv : TEXCOORD1;
+				//For VR
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
@@ -128,8 +131,12 @@ Shader "ShaderSuperb/Session13/12-Transparent-Cutout-VertexLit"
 			v2f vert( appdata_base v )
 			{
 				v2f o;
+				//使Shader功能访问实例ID。 它必须在顶点着色器的开头使用，并且对于片段着色器是可选的
 				UNITY_SETUP_INSTANCE_ID(v);
+				//For VR
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+				//法线偏移阴影有助于减少自阴影伪像,类似于旧的TRANSFER_SHADOW_CASTER，但它需要v.normal才能存在。
+				//加阴影 part 2
 				TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
 				o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
 				return o;
@@ -143,7 +150,8 @@ Shader "ShaderSuperb/Session13/12-Transparent-Cutout-VertexLit"
 			{
 				fixed4 texcol = tex2D( _MainTex, i.uv );
 				clip( texcol.a*_Color.a - _Cutoff );
-				
+				// #define SHADOW_CASTER_FRAGMENT(i) return UnityEncodeCubeShadowDepth ((length(i.vec) + unity_LightShadowBias.x) * _LightPositionRange.w);
+				//加阴影 part 3
 				SHADOW_CASTER_FRAGMENT(i)
 			}
 			ENDCG
