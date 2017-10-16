@@ -4,7 +4,7 @@
 
 Shader "ShaderSuperb/Session2/06-Tri-Planar Texturing"
 {
-  Properties 
+    Properties 
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Tiling ("Tiling", Float) = 1.0

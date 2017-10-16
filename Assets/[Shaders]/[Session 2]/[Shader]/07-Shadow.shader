@@ -70,7 +70,8 @@ Shader "ShaderSuperb/Session2/07-Shadow"
             #pragma multi_compile_shadowcaster
             #include "UnityCG.cginc"
 
-            struct v2f { 
+            struct v2f 
+            { 
                 V2F_SHADOW_CASTER;
             };
 

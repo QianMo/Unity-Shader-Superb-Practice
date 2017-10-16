@@ -150,7 +150,8 @@ Shader "ShaderSuperb/Session2/09-Rim Bump Texture with Tiling Offset Shadow"
             #pragma multi_compile_shadowcaster
             #include "UnityCG.cginc"
 
-            struct v2f { 
+            struct v2f 
+            { 
                 V2F_SHADOW_CASTER;
             };
 

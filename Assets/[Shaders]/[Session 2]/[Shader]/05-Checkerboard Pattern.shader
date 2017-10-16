@@ -4,7 +4,7 @@
 
 Shader "ShaderSuperb/Session2/04-SkyReflection Per Pixel With Texture"
 {
-  Properties 
+    Properties 
     {
         _Density ("Density", Range(2,50)) = 30
     }

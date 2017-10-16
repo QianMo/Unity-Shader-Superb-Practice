@@ -35,6 +35,7 @@ Shader "ShaderSuperb/Session13/11-Transparent-Cutout-Soft Edge Unlit"
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			//【Fog Apply】Step 1. Needed for fog variation to be compiled.
 			#pragma multi_compile_fog
 			
 			#include "UnityCG.cginc"
@@ -52,8 +53,9 @@ Shader "ShaderSuperb/Session13/11-Transparent-Cutout-Soft Edge Unlit"
 				float4 vertex : SV_POSITION;
 				fixed4 color : COLOR;
 				float2 texcoord : TEXCOORD0;
+			 	//【Fog Apply】Step 2. Used to pass fog amount around number should be a free texcoord.
 				UNITY_FOG_COORDS(1)
-				//https://docs.unity3d.com/Manual/SinglePassStereoRenderingHoloLens.html
+				//【Maro for VR】.Step 1. https://docs.unity3d.com/Manual/SinglePassStereoRenderingHoloLens.html
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
@@ -63,12 +65,16 @@ Shader "ShaderSuperb/Session13/11-Transparent-Cutout-Soft Edge Unlit"
 			
 			v2f vert (appdata_t v)
 			{
-				v2f o;
+				v2f o; 
+				//使用此功能可以使Shader功能访问实例ID。 它必须在顶点着色器的开头使用，并且对于片段着色器是可选的。
 				UNITY_SETUP_INSTANCE_ID(v);
+				//【Maro for VR】.Step 2. https://docs.unity3d.com/Manual/SinglePassStereoRenderingHoloLens.html
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.color = v.color;
 				o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
+				//【Fog Apply】Step 3. Compute fog amount from clip space position.
 				UNITY_TRANSFER_FOG(o,o.vertex);
 				return o;
 			}
@@ -78,6 +84,7 @@ Shader "ShaderSuperb/Session13/11-Transparent-Cutout-Soft Edge Unlit"
 			{
 				half4 col = _Color * tex2D(_MainTex, i.texcoord);
 				clip(col.a - _Cutoff);
+				//【Fog Apply】Step 4.Apply fog (additive pass are automatically handled)
 				UNITY_APPLY_FOG(i.fogCoord, col);
 				return col;
 			}

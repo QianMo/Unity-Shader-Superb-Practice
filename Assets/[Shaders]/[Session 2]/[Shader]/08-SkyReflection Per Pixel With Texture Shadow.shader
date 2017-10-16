@@ -4,7 +4,7 @@
 
 Shader "ShaderSuperb/Session2/08-SkyReflection Per Pixel With Texture Shadow"
 {
-  Properties 
+    Properties 
     {
         _MainTex("Base texture", 2D) = "white" {}
         _OcclusionMap("Occlusion", 2D) = "white" {}
@@ -133,12 +133,14 @@ Shader "ShaderSuperb/Session2/08-SkyReflection Per Pixel With Texture Shadow"
             #pragma multi_compile_shadowcaster
             #include "UnityCG.cginc"
 
-            struct v2f { 
+            struct v2f 
+            { 
                 V2F_SHADOW_CASTER;
             };
 
 			/*
-			struct appdata_base {
+			struct appdata_base 
+            {
 			    float4 vertex : POSITION;
 			    float3 normal : NORMAL;
 			    float4 texcoord : TEXCOORD0;

@@ -27,7 +27,8 @@ Shader "ShaderSuperb/Session2/1-SkyReflection"
             //---------------------------------
             //顶点输出，片元输入结构体
             //---------------------------------
-            struct v2f {
+            struct v2f 
+            {
                 half3 worldSpaceReflectVector : TEXCOORD0;
                 float4 pos : SV_POSITION;
             };
