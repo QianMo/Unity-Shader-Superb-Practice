@@ -54,9 +54,11 @@ Shader "ShaderSuperb/Session13/27-Internal-DeferredReflections"
 			half4 gbuffer0 = tex2D (_CameraGBufferTexture0, uv);
 			half4 gbuffer1 = tex2D (_CameraGBufferTexture1, uv);
 			half4 gbuffer2 = tex2D (_CameraGBufferTexture2, uv);
+			//在UnityStandardData结构中解码出Gbuffer
 			UnityStandardData data = UnityStandardDataFromGbuffer(gbuffer0, gbuffer1, gbuffer2);
 
 			float3 eyeVec = normalize(worldPos - _WorldSpaceCameraPos);
+			//SpecularStrength函数：SHADER_TARGET >=30时,返回specular三分量中的最大值
 			half oneMinusReflectivity = 1 - SpecularStrength(data.specularColor);
 
 			half3 worldNormalRefl = reflect(eyeVec, data.normalWorld);
@@ -74,9 +76,9 @@ Shader "ShaderSuperb/Session13/27-Internal-DeferredReflections"
 			d.boxMin[0].w		= 1;  // 1 in .w allow to disable blending in UnityGI_IndirectSpecular call
 			d.boxMax[0].xyz		= unity_SpecCube0_BoxMax + float4(blendDistance,blendDistance,blendDistance,0);
 			#endif
-
+			//获取环境光泽数据
 			Unity_GlossyEnvironmentData g = UnityGlossyEnvironmentSetup(data.smoothness, d.worldViewDir, data.normalWorld, data.specularColor);
-
+			//全局间接高光计算
 			half3 env0 = UnityGI_IndirectSpecular(d, data.occlusion, g);
 
 			UnityLight light;

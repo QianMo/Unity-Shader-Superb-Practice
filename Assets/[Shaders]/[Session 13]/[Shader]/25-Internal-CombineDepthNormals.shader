@@ -45,6 +45,7 @@ Shader "ShaderSuperb/Session13/25-Internal-CombineDepthNormals"
 			{
 				float d = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
 				float3 n = tex2D (_CameraNormalsTexture, i.uv) * 2.0 - 1.0;
+				//将Z缓冲变换到0-1的线性深度中（0为眼睛处，1为远处平面）
 				d = Linear01Depth (d);
 				n = mul ((float3x3)unity_WorldToCamera, n);
 				n.z = -n.z;

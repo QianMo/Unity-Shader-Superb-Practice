@@ -46,7 +46,7 @@ Shader "ShaderSuperb/Session13/25-Internal-CombineDepthNormals"
 				int idx = (int)_faceIndex;
 				float3 transformU = faceU[idx];
 				float3 transformV = faceV[idx];
-				
+				//返回两个三元向量的叉积(cross product)。注意，输入参数必须是三元向量
 				float3 n = cross(transformV, transformU);
 				o.texcoord = n + uv.x * transformU + uv.y * transformV;
 				return o;

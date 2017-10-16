@@ -46,6 +46,7 @@ Shader "ShaderSuperb/Session13/22-Self-Illumin-VertexLit"
 
 		// Extracts information for lightmapping, GI (emission, albedo, ...)
 		// This pass it not used during regular rendering.
+		//metaPass主要是Unity用来计算Albedo和emissive，然后提供给enlighten用的。
 		Pass
 		{
 			Name "META" 
