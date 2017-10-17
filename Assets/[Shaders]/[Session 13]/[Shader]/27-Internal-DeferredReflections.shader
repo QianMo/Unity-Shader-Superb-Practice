@@ -63,6 +63,7 @@ Shader "ShaderSuperb/Session13/27-Internal-DeferredReflections"
 
 			half3 worldNormalRefl = reflect(eyeVec, data.normalWorld);
 
+			//GI、SpecCube相关
 			// Unused member don't need to be initialized
 			UnityGIInput d;
 			d.worldPos = worldPos;
@@ -89,6 +90,7 @@ Shader "ShaderSuperb/Session13/27-Internal-DeferredReflections"
 			ind.diffuse = 0;
 			ind.specular = env0;
 
+			//获取基于物理的brdf的rgb值
 			half3 rgb = UNITY_BRDF_PBS (0, data.specularColor, oneMinusReflectivity, data.smoothness, data.normalWorld, -eyeVec, light, ind).rgb;
 
 			// Calculate falloff value, so reflections on the edges of the probe would gradually blend to previous reflection.
@@ -120,7 +122,8 @@ Shader "ShaderSuperb/Session13/27-Internal-DeferredReflections"
 
 				sampler2D _CameraReflectionsTexture;
 
-				struct v2f {
+				struct v2f 
+				{
 					float2 uv : TEXCOORD0;
 					float4 pos : SV_POSITION;
 				};

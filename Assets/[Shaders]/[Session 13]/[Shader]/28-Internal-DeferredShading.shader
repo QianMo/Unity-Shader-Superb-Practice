@@ -49,6 +49,7 @@ Shader "ShaderSuperb/Session13/28-Internal-DeferredShading"
 			float atten, fadeDist;
 			UnityLight light;
 			UNITY_INITIALIZE_OUTPUT(UnityLight, light);
+			//延迟渲染中普通照明数据的计算（方向，衰减，等...）
 			UnityDeferredCalculateLightParams (i, wpos, uv, light.dir, atten, fadeDist);
 
 			light.color = _LightColor.rgb * atten;
@@ -57,6 +58,7 @@ Shader "ShaderSuperb/Session13/28-Internal-DeferredShading"
 			half4 gbuffer0 = tex2D (_CameraGBufferTexture0, uv);
 			half4 gbuffer1 = tex2D (_CameraGBufferTexture1, uv);
 			half4 gbuffer2 = tex2D (_CameraGBufferTexture2, uv);
+			//在UnityStandardData结构中解码Gbuffer,深度缓冲
 			UnityStandardData data = UnityStandardDataFromGbuffer(gbuffer0, gbuffer1, gbuffer2);
 
 			float3 eyeVec = normalize(wpos-_WorldSpaceCameraPos);
@@ -66,7 +68,7 @@ Shader "ShaderSuperb/Session13/28-Internal-DeferredShading"
 			UNITY_INITIALIZE_OUTPUT(UnityIndirect, ind);
 			ind.diffuse = 0;
 			ind.specular = 0;
-
+			//获取基于物理的brdf的rgb值
 		    half4 res = UNITY_BRDF_PBS (data.diffuseColor, data.specularColor, oneMinusReflectivity, data.smoothness, data.normalWorld, -eyeVec, light, ind);
 
 			return res;
@@ -77,8 +79,11 @@ Shader "ShaderSuperb/Session13/28-Internal-DeferredShading"
 		#else
 		fixed4
 		#endif
+
+
 		frag (unity_v2f_deferred i) : SV_Target
 		{
+			//计算光照
 			half4 c = CalculateLight(i);
 			#ifdef UNITY_HDR_ON
 			return c;
@@ -126,6 +131,7 @@ Shader "ShaderSuperb/Session13/28-Internal-DeferredShading"
 			o.vertex = UnityObjectToClipPos(vertex);
 			o.texcoord = texcoord.xy;
 		#ifdef UNITY_SINGLE_PASS_STEREO
+			//计算single pass stereo下的屏幕空间纹理坐标
 			o.texcoord = TransformStereoScreenSpaceTex(o.texcoord, 1.0f);
 		#endif
 			return o;
@@ -133,6 +139,7 @@ Shader "ShaderSuperb/Session13/28-Internal-DeferredShading"
 
 		fixed4 frag (v2f i) : SV_Target
 		{
+			//log(x)2的值
 			return -log2(tex2D(_LightBuffer, i.texcoord));
 		}
 		ENDCG
