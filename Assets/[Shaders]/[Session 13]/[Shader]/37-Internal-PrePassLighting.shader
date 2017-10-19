@@ -25,6 +25,7 @@ Shader "ShaderSuperb/Session13/37-Internal-PrePassLighting"
 			float2 uv;
 			half3 lightDir;
 			float atten, fadeDist;
+			//计算 延迟渲染中普通照明数据（方向，衰减，等...）
 			UnityDeferredCalculateLightParams (i, wpos, uv, lightDir, atten, fadeDist);
 
 			half4 nspec = tex2D (_CameraNormalsTexture, TRANSFORM_TEX(uv, _CameraNormalsTexture));

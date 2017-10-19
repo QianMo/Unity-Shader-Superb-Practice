@@ -106,6 +106,8 @@ Shader "ShaderSuperb/Session13/29-Internal-DepthNormalsTexture"
 			    v2f o;
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
+				//树皮顶点计算帮助函数
 			    TreeVertBark(v);
 				
 				o.pos = UnityObjectToClipPos(v.vertex);
@@ -148,6 +150,8 @@ Shader "ShaderSuperb/Session13/29-Internal-DepthNormalsTexture"
 			    v2f o;
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
+				//树叶顶点计算帮助函数
 			    TreeVertLeaf(v);
 				
 				o.pos = UnityObjectToClipPos(v.vertex);
@@ -300,7 +304,9 @@ Shader "ShaderSuperb/Session13/29-Internal-DepthNormalsTexture"
 				v2f o;
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+				//terrain下树顶点的运动帮助函数
 				TerrainAnimateTree(v.vertex, v.color.w);
+
 				o.pos = UnityObjectToClipPos(v.vertex);
 				o.uv = v.texcoord.xy;
 			    o.nz.xyz = -COMPUTE_VIEW_NORMAL;
@@ -344,6 +350,7 @@ Shader "ShaderSuperb/Session13/29-Internal-DepthNormalsTexture"
 				v2f o;
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+				//billboard版的树帮助函数
 				TerrainBillboardTree(v.vertex, v.texcoord1.xy, v.texcoord.y);
 				o.pos = UnityObjectToClipPos(v.vertex);
 				o.uv.x = v.texcoord.x;
@@ -389,6 +396,7 @@ Shader "ShaderSuperb/Session13/29-Internal-DepthNormalsTexture"
 				v2f o;
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+				//wave草地Billboard顶点帮助函数
 				WavingGrassBillboardVert (v);
 				o.color = v.color;
 				o.pos = UnityObjectToClipPos(v.vertex);
@@ -436,6 +444,7 @@ Shader "ShaderSuperb/Session13/29-Internal-DepthNormalsTexture"
 				v2f o;
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+				//草地顶点帮助函数
 				WavingGrassVert (v);
 				o.color = v.color;
 				o.pos = UnityObjectToClipPos(v.vertex);
