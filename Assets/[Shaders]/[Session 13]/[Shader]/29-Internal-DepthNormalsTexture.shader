@@ -1,4 +1,4 @@
-﻿
+
 
 Shader "ShaderSuperb/Session13/29-Internal-DepthNormalsTexture"
 {
@@ -30,12 +30,15 @@ Shader "ShaderSuperb/Session13/29-Internal-DepthNormalsTexture"
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 			    o.pos = UnityObjectToClipPos(v.vertex);
+			    //计算法线视角方向
 			    o.nz.xyz = COMPUTE_VIEW_NORMAL;
+			    //计算深度值
 			    o.nz.w = COMPUTE_DEPTH_01;
 			    return o;
 			}
 			fixed4 frag(v2f i) : SV_Target 
 			{
+				//Unity将法线编码到R和G通道里，而深度编码到B和A通道里。
 				return EncodeDepthNormal (i.nz.w, i.nz.xyz);
 			}
 			ENDCG

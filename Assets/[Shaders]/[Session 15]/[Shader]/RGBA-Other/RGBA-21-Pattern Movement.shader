@@ -23,7 +23,6 @@ Shader "ShaderSuperb/Session15/RGBA-Other/RGBA-21-Pattern Movement"
 
 	SubShader
 	{
-
 		Tags {"Queue" = "Transparent" "IgnoreProjector" = "true" "RenderType" = "Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="True"}
 		ZWrite Off Blend SrcAlpha OneMinusSrcAlpha Cull Off
 
