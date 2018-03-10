@@ -68,7 +68,7 @@ Shader "Shader-Library/Toon Outline"
 				
 				//unity transform position
 				o.pos = UnityObjectToClipPos(v.vertex);
-				
+
 				//world position
 				half4 posWorld = mul(unity_ObjectToWorld, v.vertex);
 				//view direction
