@@ -1,4 +1,4 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 // Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 
@@ -12,6 +12,7 @@ Shader "ShaderSuperb/Session17/Custom/SpecularShader"
 		_SpecColor ("Specular Material Color", Color) = (1,1,1,1) 
         _Shininess ("Shininess", Float) = 10
 	}
+	
 	SubShader
 	{
 		Tags { "LightMode" = "ForwardBase" }
