@@ -75,3 +75,4 @@ $RECYCLE.BIN/
 *.lnk
 Assets/Script.cs
 Assets/Script.cs.meta
+*.json
