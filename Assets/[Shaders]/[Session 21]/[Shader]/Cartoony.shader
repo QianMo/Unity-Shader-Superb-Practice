@@ -39,6 +39,9 @@ Shader "ShaderSuperb/Session21/Toony/Lighted Outline"
 			float3 viewDir;
 		};
 		
+		//---------------------------------------------------
+		// 自定义Toony Blinn Phong光照模型
+		//---------------------------------------------------
 		inline fixed4 LightingToonyBlinnPhong (SurfaceOutput s, fixed3 lightDir, half3 viewDir, fixed atten)
 		{
 			half3 h = normalize (lightDir + viewDir);
@@ -55,7 +58,10 @@ Shader "ShaderSuperb/Session21/Toony/Lighted Outline"
 			c.a = s.Alpha + _LightColor0.a * _SpecColor.a * spec * atten;
 			return c;
 		}
-		
+
+		//---------------------------------------------------
+		// 用于延迟光照
+		//---------------------------------------------------
 		inline fixed4 LightingToonyBlinnPhong_PrePass (SurfaceOutput s, half4 light)
 		{
 			fixed spec = light.a * s.Gloss;
