@@ -14,6 +14,7 @@ Shader "ShaderSuperb/Session19/Lighting/Emission"
 		[HDR] _EmissionColor ("Emission Color", Color) = (0,0,0)
 		_Threshold ("Threshold", Range(0., 1.)) = 1.
 	}
+
 	SubShader
 	{
 		Tags { "LightMode"="ForwardBase" }
@@ -25,7 +26,8 @@ Shader "ShaderSuperb/Session19/Lighting/Emission"
 			#pragma fragment frag
 			#include "UnityCG.cginc"
 
-			struct v2f {
+			struct v2f 
+			{
 				float4 pos : SV_POSITION;
 				fixed4 col : COLOR0;
 				float2 uv : TEXCOORD0;
@@ -38,7 +40,8 @@ Shader "ShaderSuperb/Session19/Lighting/Emission"
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 
-			v2f vert(appdata_base v) {
+			v2f vert(appdata_base v) 
+			{
 				v2f o;
 				o.pos = UnityObjectToClipPos(v.vertex);
 				float3 worldNormal = normalize(mul(v.normal, (float3x3)unity_WorldToObject));
@@ -53,7 +56,8 @@ Shader "ShaderSuperb/Session19/Lighting/Emission"
 			float4 _EmissionColor;
 			float _Threshold;
 
-			fixed4 frag(v2f i) : SV_Target {
+			fixed4 frag(v2f i) : SV_Target 
+			{
 				fixed3 emi = tex2D(_MainTex, i.uv).r * _EmissionColor.rgb * _Threshold;
 				i.col.rgb += emi;
 				return i.col;

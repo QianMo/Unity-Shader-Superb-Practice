@@ -10,6 +10,7 @@ Shader "ShaderSuperb/Session19/Lighting/CelShader"
 		_Treshold ("Cel treshold", Range(1., 20.)) = 5.
 		_Ambient ("Ambient intensity", Range(0., 0.5)) = 0.1
 	}
+	
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" "LightMode"="ForwardBase" }

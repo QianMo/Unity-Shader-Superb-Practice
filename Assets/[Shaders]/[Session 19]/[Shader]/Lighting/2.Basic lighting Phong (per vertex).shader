@@ -40,7 +40,8 @@ Shader "ShaderSuperb/Session19/Lighting/BasicLightingPerVertex"
  
             #include "UnityCG.cginc"
  
-            struct v2f {
+            struct v2f 
+            {
                 float4 pos : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 fixed4 light : COLOR0;
