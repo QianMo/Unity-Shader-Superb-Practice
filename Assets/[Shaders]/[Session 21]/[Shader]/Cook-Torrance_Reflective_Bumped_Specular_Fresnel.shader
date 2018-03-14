@@ -10,7 +10,7 @@ Shader "ShaderSuperb/Session21/Reflective/Fresnel/Cook-Torrance Bumped Specular"
 		_Fresnel("Reflection Fresnel Exponent",Range(0,6)) = 1
 		_MainTex ("Base (RGB) Gloss (A)", 2D) = "white" {}
 		_BumpMap ("Normalmap", 2D) = "bump" {}
-		_Cube ("Reflection Cubemap", Cube) = "_Skybox" { TexGen CubeReflect }
+		_Cube ("Reflection Cubemap", Cube) = "_Skybox" { }
 	}
 
 	SubShader 
@@ -51,6 +51,7 @@ Shader "ShaderSuperb/Session21/Reflective/Fresnel/Cook-Torrance Bumped Specular"
 			return Rzero + (1 - Rzero)*pow((1 - dot(lightDir,normal)),exponent);
 		}
 
+		//根据Cook-Torrance光照模型
 		inline fixed4 LightingCookTorrance (SurfaceOutput s, fixed3 lightDir, fixed3 viewDir, fixed atten)
 		{
 			float3 h = normalize (lightDir + viewDir);
@@ -64,6 +65,7 @@ Shader "ShaderSuperb/Session21/Reflective/Fresnel/Cook-Torrance Bumped Specular"
 			c.a = s.Alpha + _LightColor0.a * _SpecColor.a * spec * G*atten;
 			return c;
 		}
+
 
 		struct Input 
 		{
