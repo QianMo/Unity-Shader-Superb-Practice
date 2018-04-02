@@ -153,10 +153,13 @@
 			float NdotV = saturate( dot( s.Normal, viewDir ));
 			float VdotH = saturate( dot( viewDir, halfV ));
             float LdotH = saturate( dot( lightDir, halfV ));
-
+			// diffuse Type 1: Disney
 			float3 diff = DisneyDiff(s.Albedo, NdotL,  NdotV, LdotH, _Roughness);
 			float3 spec = CookTorranceSpec(NdotL, LdotH, NdotH, NdotV, _Roughness, _SpecColor);
-			float3 diff2 = (DisneyFrostbiteDiff(NdotL, NdotV, LdotH, _Roughness) * s.Albedo)/PI;
+
+			// diffuse Type 2: Disney Frostbite
+			//float3 diff2 = (DisneyFrostbiteDiff(NdotL, NdotV, LdotH, _Roughness) * s.Albedo)/PI;
+
 			float3 firstLayer = ( diff + spec * _SpecColor) * _LightColor0.rgb;
             float4 c = float4(firstLayer, s.Alpha);
 
@@ -174,7 +177,7 @@
 			o.Normal = UnpackNormal( tex2D ( _BumpMap, IN.uv_MainTex ) );
 			o.Alpha = c.a;
 		}
-		
+
 		ENDCG
 	}
 	FallBack "Diffuse"
