@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session17/Custom/SurfaceShaderCustomPhong" 
+﻿Shader "ShaderSuperb/Session17/Dev/5.SurfaceShaderCustomLambert" 
 {
 	Properties 
 	{
@@ -31,7 +31,8 @@
 			// put more per-instance properties here
 		UNITY_INSTANCING_CBUFFER_END
 
-		inline void LightingPhong_GI (
+		inline void LightingPhong_GI 
+		(
 			SurfaceOutput s,
 			UnityGIInput data,
 			inout UnityGI gi)

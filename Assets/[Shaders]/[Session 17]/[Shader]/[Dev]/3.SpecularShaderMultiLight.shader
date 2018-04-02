@@ -1,4 +1,4 @@
-﻿Shader "ShaderSuperb/Session17/Dev/SpecularShader"
+﻿Shader "ShaderSuperb/Session17/Dev/3.SpecularShaderMultiLight"
 {
 	Properties
 	{
