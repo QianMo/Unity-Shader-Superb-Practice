@@ -1,19 +1,19 @@
-Shader "ShaderSuperb/Session17/Custom/CookTorranceSurface" 
+﻿Shader "ShaderSuperb/Session17/Dev/10.SurfaceShaderPBSCookTorrance" 
 {
-	Properties 
+	Properties
 	{
 		_MainTex ("Base (RGB)", 2D) = "white" {}
 		_ColorTint ("Color", Color) = (1,1,1,1)
 		_SpecColor ("Specular Color", Color) = (1,1,1,1)
 		_BumpMap ("Normal Map", 2D) = "bump" {}
 		_Roughness ("Roughness", Range(0,1)) = 0.5
-        _Subsurface ("Subsurface", Range(0,1)) = 0.5
+		_Subsurface ("Subsurface", Range(0,1)) = 0.5
 	}
+
 	SubShader 
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 200
-		
 		CGPROGRAM
 		#pragma surface surf CookTorrance fullforwardshadows
 		#pragma target 3.0
@@ -23,26 +23,26 @@ Shader "ShaderSuperb/Session17/Custom/CookTorranceSurface"
 			float2 uv_MainTex;
 		};
 
+		#define PI 3.14159265358979323846f
+
 		sampler2D _MainTex;
-        sampler2D _BumpMap;
-		float _Roughness;
-        float _Subsurface;
-		float4 _ColorTint;
-
-        #define PI 3.14159265358979323846f
-
+		sampler2D _BumpMap;
+		half _Roughness;
+		float _Subsurface;
+		fixed4 _ColorTint;
 		UNITY_INSTANCING_CBUFFER_START(Props)
 		UNITY_INSTANCING_CBUFFER_END
 
-        struct SurfaceOutputCustom 
-        {
-			float3 Albedo;
-			float3 Normal;
-			float3 Emission;
-			float Alpha;
+		struct SurfaceOutputCustom 
+		{
+			fixed3 Albedo;
+			fixed3 Normal;
+			fixed3 Emission;
+			fixed Alpha;
 		};
 
-        float sqr(float value) 
+
+	 float sqr(float value) 
         {
             return value * value;
         }
@@ -60,8 +60,7 @@ Shader "ShaderSuperb/Session17/Custom/CookTorranceSurface"
         }
 
         //Disney Diffuse 
-        inline float3 DisneyDiff(float3 albedo, float NdotL, float NdotV, float LdotH, float roughness)
-		{
+        inline float3 DisneyDiff(float3 albedo, float NdotL, float NdotV, float LdotH, float roughness){
             float albedoLuminosity = 0.3 * albedo.r 
                                    + 0.6 * albedo.g  
                                    + 0.1 * albedo.b; // luminance approx.
@@ -108,8 +107,7 @@ Shader "ShaderSuperb/Session17/Custom/CookTorranceSurface"
         }
 
         //Cook-Torrance 
-		inline float3 CookTorranceSpec(float NdotL, float LdotH, float NdotH, float NdotV, float roughness, float F0)
-		{
+		inline float3 CookTorranceSpec(float NdotL, float LdotH, float NdotH, float NdotV, float roughness, float F0){
 			float alpha = sqr(roughness);
             float F, D, G;
 
@@ -142,8 +140,7 @@ Shader "ShaderSuperb/Session17/Custom/CookTorranceSurface"
 			gi = UnityGlobalIllumination (data, 1.0, s.Normal);
 		}
 
-        inline float4 LightingCookTorrance (SurfaceOutputCustom s, float3 viewDir, UnityGI gi)
-		{
+        inline float4 LightingCookTorrance (SurfaceOutputCustom s, float3 viewDir, UnityGI gi){
             UnityLight light = gi.light;
 
 			viewDir = normalize ( viewDir );
@@ -177,6 +174,7 @@ Shader "ShaderSuperb/Session17/Custom/CookTorranceSurface"
 			o.Normal = UnpackNormal( tex2D ( _BumpMap, IN.uv_MainTex ) );
 			o.Alpha = c.a;
 		}
+		
 		ENDCG
 	}
 	FallBack "Diffuse"
